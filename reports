@@ -1,1 +1,425 @@
+const puppeteer = require('puppeteer'); // v23.0.0 or later
+
+(async () => {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    const timeout = 5000;
+    page.setDefaultTimeout(timeout);
+
+    {
+        const targetPage = page;
+        await targetPage.setViewport({
+            width: 576,
+            height: 593
+        })
+    }
+    {
+        const targetPage = page;
+        await targetPage.goto('https://authbluesvcqa-vip.phx.aexp.com/ssoi/auth?method=GET&requestid=e661dc3e-775d-49fa-947f-b378e5223cea&target=https%3A%2F%2Fhyperdrive-qa.aexp.com%2Fconsumer%2Fdashboard');
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#userid'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"userid\\"])')
+        ])
+            .setTimeout(timeout)
+            .click({
+              count: 2,
+              offset: {
+                x: 31.333332061767578,
+                y: 27.21875,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#userid'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"userid\\"])')
+        ])
+            .setTimeout(timeout)
+            .fill('nthodeti');
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#pwd'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"pwd\\"])')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 46.33333206176758,
+                y: 17.55206298828125,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#pwd'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"pwd\\"])')
+        ])
+            .setTimeout(timeout)
+            .fill('Hyperdrive@UI@5814');
+    }
+    {
+        const targetPage = page;
+        const promises = [];
+        const startWaitingForEvents = () => {
+            promises.push(targetPage.waitForNavigation());
+        }
+        await puppeteer.Locator.race([
+            targetPage.locator('#login-button'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"login-button\\"])')
+        ])
+            .setTimeout(timeout)
+            .on('action', () => startWaitingForEvents())
+            .click({
+              offset: {
+                x: 120.33333206176758,
+                y: 17.55206298828125,
+              },
+            });
+        await Promise.all(promises);
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#participantDetails > div'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"participantDetails\\"]/div)')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 27.59375,
+                y: 13,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#user-role'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"user-role\\"])')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 149,
+                y: 27,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#participants'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"participants\\"])')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 126,
+                y: 20,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#useCases'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"useCases\\"])')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 382,
+                y: 162,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#editUseCase-44ea4881-7e3e-4db5-9639-45aec41219d2'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"editUseCase-44ea4881-7e3e-4db5-9639-45aec41219d2\\"])')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 46.984375,
+                y: 15,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#accessControlNavItem'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"accessControlNavItem\\"])')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 94,
+                y: 32,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('li a button'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"sideBarNav\\"]/ul/li/div/div/ul/a/li/button)')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 124,
+                y: 32,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#description'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"description\\"])')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 78,
+                y: 36,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#description'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"description\\"])')
+        ])
+            .setTimeout(timeout)
+            .fill('Hyperdrive@UI@5814');
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#requestAccess'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"requestAccess\\"])')
+        ])
+            .setTimeout(timeout)
+            .click({
+              delay: 588,
+              offset: {
+                x: 23,
+                y: 429,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#description'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"description\\"])')
+        ])
+            .setTimeout(timeout)
+            .fill('test');
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#carId'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"carId\\"])')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 97,
+                y: 22,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#carId'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"carId\\"])')
+        ])
+            .setTimeout(timeout)
+            .fill('500000138');
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('div.margin-2-b > div > div.cep-request-access__RequestAccess__editorW___I0TWn > div div'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"valBtn\\"]/div)')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 16.640625,
+                y: 3,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator("[data-testid='nextBtn'] > span"),
+            targetPage.locator('::-p-xpath(//*[@data-testid=\\"nextBtn\\"]/span)')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 77,
+                y: 29,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#location'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"location\\"])')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 167,
+                y: 30,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#location'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"location\\"])')
+        ])
+            .setTimeout(timeout)
+            .fill('Global Processing');
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('div.pad-0 > div:nth-of-type(1) button.cep-request-access__requestAccess__selectedBtn___KwpjV'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"select_source_btn\\"])')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 57,
+                y: 26,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('#sourceEventCards > div.pad-0 > div:nth-of-type(2) button.cep-request-access__requestAccess__selectedBtn___KwpjV'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"select_source_btn\\"])')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 62,
+                y: 25,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator("[data-testid='nextBtn'] > span"),
+            targetPage.locator('::-p-xpath(//*[@data-testid=\\"nextBtn\\"]/span)')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 75,
+                y: 26,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('div.cep-request-access__accessControlManager__cardsMinW___3lknL > div:nth-of-type(1) button.cep-request-access__requestAccess__selectedBtn___KwpjV'),
+            targetPage.locator('::-p-xpath(//*[@id=\\"select_source_btn\\"])')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 97,
+                y: 37,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator("[data-testid='nextBtn'] > span"),
+            targetPage.locator('::-p-xpath(//*[@data-testid=\\"nextBtn\\"]/span)')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 91,
+                y: 27,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator("[data-testid='attributeRuleCardsContainer'] > div:nth-of-type(1) button.cep-request-access__requestAccess__selectedBtn___KwpjV"),
+            targetPage.locator('::-p-xpath(//*[@id=\\"select_source_btn\\"])')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 82,
+                y: 17,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator("[data-testid='nextBtn'] > span"),
+            targetPage.locator('::-p-xpath(//*[@data-testid=\\"nextBtn\\"]/span)')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 64,
+                y: 15,
+              },
+            });
+    }
+    {
+        const targetPage = page;
+        await puppeteer.Locator.race([
+            targetPage.locator('div.row > div.flex > div span'),
+            targetPage.locator('::-p-xpath(//*[@data-testid=\\"submitBtn\\"]/span)')
+        ])
+            .setTimeout(timeout)
+            .click({
+              offset: {
+                x: 32,
+                y: 27,
+              },
+            });
+    }
+
+    await browser.close();
+
+})().catch(err => {
+    console.error(err);
+    process.exit(1);
+});
 test
