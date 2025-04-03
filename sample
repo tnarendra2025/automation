@@ -1,1 +1,289 @@
+[2025-04-03T18:09:16.051Z] 
+[2025-04-03T18:09:16.056Z] [0;35m[INFO]: Running Executing Selenium Tests on Sauce Labs
+[2025-04-03T18:09:16.057Z] 
+[2025-04-03T18:09:16.070Z] 
+[2025-04-03T18:09:16.077Z] [0;35m[INFO]: Jenkins URL - https://ci.aexp.com/mup3/
+[2025-04-03T18:09:16.077Z] 
+[2025-04-03T18:09:16.130Z] Masking supported pattern matches of $SAUCE_USERNAME or $SAUCE_ACCESS_KEY
+[2025-04-03T18:09:16.147Z] *** Playwright test execution started ***
+[2025-04-03T18:09:16.426Z] + export SAUCECTL_INSTALL_BINARY=https://artifactory.aexp.com/artifactory/ci-internal/saucectl/saucectl_0.148.0_linux_64-bit.tar.gz
+[2025-04-03T18:09:16.426Z] + SAUCECTL_INSTALL_BINARY=https://artifactory.aexp.com/artifactory/ci-internal/saucectl/saucectl_0.148.0_linux_64-bit.tar.gz
+[2025-04-03T18:09:16.426Z] + export path=/amex/jenkins/installables/dotnetcore/dotnet2.1:/amex/jenkins/installables/yarn/yarn-v1.3.2/bin:/amex/jenkins/installables/nodejs/node20/node-v20.12.2-linux-x64/bin:/amex/jenkins/installables/maven/maven-3.1.1/bin:/amex/jenkins/installables/java/zulu8.76.0.17-ca-fx-jdk8.0.402-linux_x64/bin:/amex/jenkins/installables/java/jdk/bin/:/amex/jenkins/installables/nodejs/node8/node-v8.15.0-linux-x64/bin:/amex/jenkins/installables/maven/maven-3.5.4/bin/:/amex/jenkins/installables/gradle/gradle-4.9/bin/:/usr/bin:/usr/local/sonar-scanner/bin/:/amex/jenkins/installables/go/bin:/amex/jenkins/installables/helm/:/usr/local/git/bin:/amex/jenkins/installables/android/android-sdk-linux/bin:/amex/jenkins/.local/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:./node_modules/.bin/
+[2025-04-03T18:09:16.426Z] + path=/amex/jenkins/installables/dotnetcore/dotnet2.1:/amex/jenkins/installables/yarn/yarn-v1.3.2/bin:/amex/jenkins/installables/nodejs/node20/node-v20.12.2-linux-x64/bin:/amex/jenkins/installables/maven/maven-3.1.1/bin:/amex/jenkins/installables/java/zulu8.76.0.17-ca-fx-jdk8.0.402-linux_x64/bin:/amex/jenkins/installables/java/jdk/bin/:/amex/jenkins/installables/nodejs/node8/node-v8.15.0-linux-x64/bin:/amex/jenkins/installables/maven/maven-3.5.4/bin/:/amex/jenkins/installables/gradle/gradle-4.9/bin/:/usr/bin:/usr/local/sonar-scanner/bin/:/amex/jenkins/installables/go/bin:/amex/jenkins/installables/helm/:/usr/local/git/bin:/amex/jenkins/installables/android/android-sdk-linux/bin:/amex/jenkins/.local/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:./node_modules/.bin/
+[2025-04-03T18:09:16.427Z] + npm install saucectl
+[2025-04-03T18:09:34.528Z] 
+[2025-04-03T18:09:34.528Z] added 102 packages, and audited 103 packages in 17s
+[2025-04-03T18:09:34.528Z] 
+[2025-04-03T18:09:34.528Z] 9 packages are looking for funding
+[2025-04-03T18:09:34.528Z]   run `npm fund` for details
+[2025-04-03T18:09:34.528Z] 
+[2025-04-03T18:09:34.528Z] found 0 vulnerabilities
+[2025-04-03T18:09:34.528Z] npm notice
+[2025-04-03T18:09:34.528Z] npm notice New major version of npm available! 10.9.0 -> 11.2.0
+[2025-04-03T18:09:34.528Z] npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.2.0
+[2025-04-03T18:09:34.528Z] npm notice To update run: npm install -g npm@11.2.0
+[2025-04-03T18:09:34.528Z] npm notice
+[2025-04-03T18:09:34.528Z] + npm install
+[2025-04-03T18:09:35.893Z] 
+[2025-04-03T18:09:35.893Z] > hypertestAutomation@1.0.0 postinstall
+[2025-04-03T18:09:35.893Z] > npx playwright install
+[2025-04-03T18:09:35.893Z] 
+[2025-04-03T18:09:39.155Z] BEWARE: your OS is not officially supported by Playwright; downloading fallback build for ubuntu20.04-x64.
+[2025-04-03T18:09:39.155Z] Downloading Chromium 127.0.6533.17 (playwright build v1124) from https://artifactory.aexp.com/playwright-azureedge-raw-proxy/builds/chromium/1124/chromium-linux.zip
+[2025-04-03T18:09:39.725Z] |                                                                                |   0% of 161.3 MiB
+[2025-04-03T18:09:39.981Z] |■■■■■■■■                                                                        |  10% of 161.3 MiB
+[2025-04-03T18:09:41.889Z] |■■■■■■■■■■■■■■■■                                                                |  20% of 161.3 MiB
+[2025-04-03T18:09:42.144Z] |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 161.3 MiB
+[2025-04-03T18:09:42.706Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 161.3 MiB
+[2025-04-03T18:09:42.706Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 161.3 MiB
+[2025-04-03T18:09:42.962Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 161.3 MiB
+[2025-04-03T18:09:42.963Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 161.3 MiB
+[2025-04-03T18:09:43.220Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 161.3 MiB
+[2025-04-03T18:09:43.476Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 161.3 MiB
+[2025-04-03T18:09:43.477Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 161.3 MiB
+[2025-04-03T18:09:55.666Z] Chromium 127.0.6533.17 (playwright build v1124) downloaded to /amex/jenkins/workspace/0000138_cep-test-automation_main/node_modules/playwright-core/.local-browsers/chromium-1124
+[2025-04-03T18:09:55.667Z] BEWARE: your OS is not officially supported by Playwright; downloading fallback build for ubuntu20.04-x64.
+[2025-04-03T18:09:55.667Z] Downloading FFMPEG playwright build v1009 from https://artifactory.aexp.com/playwright-azureedge-raw-proxy/builds/ffmpeg/1009/ffmpeg-linux.zip
+[2025-04-03T18:09:55.667Z] |                                                                                |   0% of 2.6 MiB
+[2025-04-03T18:09:55.667Z] |■■■■■■■■                                                                        |  10% of 2.6 MiB
+[2025-04-03T18:09:55.667Z] |■■■■■■■■■■■■■■■■                                                                |  20% of 2.6 MiB
+[2025-04-03T18:09:55.667Z] |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 2.6 MiB
+[2025-04-03T18:09:55.667Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 2.6 MiB
+[2025-04-03T18:09:55.667Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 2.6 MiB
+[2025-04-03T18:09:55.667Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 2.6 MiB
+[2025-04-03T18:09:55.667Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 2.6 MiB
+[2025-04-03T18:09:55.667Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 2.6 MiB
+[2025-04-03T18:09:55.667Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 2.6 MiB
+[2025-04-03T18:09:55.667Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 2.6 MiB
+[2025-04-03T18:09:58.969Z] FFMPEG playwright build v1009 downloaded to /amex/jenkins/workspace/0000138_cep-test-automation_main/node_modules/playwright-core/.local-browsers/ffmpeg-1009
+[2025-04-03T18:09:58.969Z] BEWARE: your OS is not officially supported by Playwright; downloading fallback build for ubuntu20.04-x64.
+[2025-04-03T18:09:58.969Z] Downloading Firefox 127.0 (playwright build v1454) from https://artifactory.aexp.com/playwright-azureedge-raw-proxy/builds/firefox/1454/firefox-ubuntu-20.04.zip
+[2025-04-03T18:09:59.534Z] |                                                                                |   0% of 86.6 MiB
+[2025-04-03T18:09:59.534Z] |■■■■■■■■                                                                        |  10% of 86.6 MiB
+[2025-04-03T18:09:59.789Z] |■■■■■■■■■■■■■■■■                                                                |  20% of 86.6 MiB
+[2025-04-03T18:09:59.789Z] |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 86.6 MiB
+[2025-04-03T18:10:00.045Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 86.6 MiB
+[2025-04-03T18:10:00.045Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 86.6 MiB
+[2025-04-03T18:10:00.045Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 86.6 MiB
+[2025-04-03T18:10:00.300Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 86.6 MiB
+[2025-04-03T18:10:00.301Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 86.6 MiB
+[2025-04-03T18:10:00.556Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 86.6 MiB
+[2025-04-03T18:10:00.557Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 86.6 MiB
+[2025-04-03T18:10:05.891Z] Firefox 127.0 (playwright build v1454) downloaded to /amex/jenkins/workspace/0000138_cep-test-automation_main/node_modules/playwright-core/.local-browsers/firefox-1454
+[2025-04-03T18:10:05.891Z] BEWARE: your OS is not officially supported by Playwright; downloading fallback build for ubuntu20.04-x64.
+[2025-04-03T18:10:05.891Z] Downloading Webkit 17.4 (playwright build v2035) from https://artifactory.aexp.com/playwright-azureedge-raw-proxy/builds/webkit/2035/webkit-ubuntu-20.04.zip
+[2025-04-03T18:10:06.618Z] |                                                                                |   0% of 133.2 MiB
+[2025-04-03T18:10:06.896Z] |■■■■■■■■                                                                        |  10% of 133.2 MiB
+[2025-04-03T18:10:06.896Z] |■■■■■■■■■■■■■■■■                                                                |  20% of 133.2 MiB
+[2025-04-03T18:10:07.215Z] |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 133.2 MiB
+[2025-04-03T18:10:07.215Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 133.2 MiB
+[2025-04-03T18:10:07.215Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 133.2 MiB
+[2025-04-03T18:10:07.576Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 133.2 MiB
+[2025-04-03T18:10:07.576Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 133.2 MiB
+[2025-04-03T18:10:07.576Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 133.2 MiB
+[2025-04-03T18:10:07.871Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 133.2 MiB
+[2025-04-03T18:10:08.139Z] |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 133.2 MiB
+[2025-04-03T18:10:20.461Z] Webkit 17.4 (playwright build v2035) downloaded to /amex/jenkins/workspace/0000138_cep-test-automation_main/node_modules/playwright-core/.local-browsers/webkit-2035
+[2025-04-03T18:10:20.720Z] Playwright Host validation warning: 
+[2025-04-03T18:10:20.720Z] ╔══════════════════════════════════════════════════════╗
+[2025-04-03T18:10:20.720Z] ║ Host system is missing dependencies to run browsers. ║
+[2025-04-03T18:10:20.720Z] ║ Missing libraries:                                   ║
+[2025-04-03T18:10:20.720Z] ║     libicudata.so.66                                 ║
+[2025-04-03T18:10:20.720Z] ║     libicui18n.so.66                                 ║
+[2025-04-03T18:10:20.720Z] ║     libatomic.so.1                                   ║
+[2025-04-03T18:10:20.720Z] ║     libicuuc.so.66                                   ║
+[2025-04-03T18:10:20.720Z] ║     libwoff2dec.so.1.0.2                             ║
+[2025-04-03T18:10:20.720Z] ║     libevent-2.1.so.7                                ║
+[2025-04-03T18:10:20.720Z] ║     libopus.so.0                                     ║
+[2025-04-03T18:10:20.720Z] ║     libjpeg.so.8                                     ║
+[2025-04-03T18:10:20.720Z] ║     libwebp.so.6                                     ║
+[2025-04-03T18:10:20.720Z] ║     libenchant-2.so.2                                ║
+[2025-04-03T18:10:20.720Z] ║     libsecret-1.so.0                                 ║
+[2025-04-03T18:10:20.720Z] ║     libhyphen.so.0                                   ║
+[2025-04-03T18:10:20.720Z] ║     libflite.so.1                                    ║
+[2025-04-03T18:10:20.720Z] ║     libflite_usenglish.so.1                          ║
+[2025-04-03T18:10:20.720Z] ║     libflite_cmu_grapheme_lang.so.1                  ║
+[2025-04-03T18:10:20.720Z] ║     libflite_cmu_grapheme_lex.so.1                   ║
+[2025-04-03T18:10:20.720Z] ║     libflite_cmu_indic_lang.so.1                     ║
+[2025-04-03T18:10:20.720Z] ║     libflite_cmu_indic_lex.so.1                      ║
+[2025-04-03T18:10:20.720Z] ║     libflite_cmulex.so.1                             ║
+[2025-04-03T18:10:20.720Z] ║     libflite_cmu_time_awb.so.1                       ║
+[2025-04-03T18:10:20.720Z] ║     libflite_cmu_us_awb.so.1                         ║
+[2025-04-03T18:10:20.720Z] ║     libflite_cmu_us_kal16.so.1                       ║
+[2025-04-03T18:10:20.720Z] ║     libflite_cmu_us_kal.so.1                         ║
+[2025-04-03T18:10:20.720Z] ║     libflite_cmu_us_rms.so.1                         ║
+[2025-04-03T18:10:20.720Z] ║     libflite_cmu_us_slt.so.1                         ║
+[2025-04-03T18:10:20.720Z] ║     libpcre.so.3                                     ║
+[2025-04-03T18:10:20.721Z] ║     libgudev-1.0.so.0                                ║
+[2025-04-03T18:10:20.721Z] ║     libffi.so.7                                      ║
+[2025-04-03T18:10:20.721Z] ║     libevdev.so.2                                    ║
+[2025-04-03T18:10:20.721Z] ║     libx264.so                                       ║
+[2025-04-03T18:10:20.721Z] ╚══════════════════════════════════════════════════════╝
+[2025-04-03T18:10:20.721Z]     at validateDependenciesLinux (/amex/jenkins/workspace/0000138_cep-test-automation_main/node_modules/playwright-core/lib/server/registry/dependencies.js:216:9)
+[2025-04-03T18:10:20.721Z]     at async Registry._validateHostRequirements (/amex/jenkins/workspace/0000138_cep-test-automation_main/node_modules/playwright-core/lib/server/registry/index.js:575:43)
+[2025-04-03T18:10:20.721Z]     at async Registry._validateHostRequirementsForExecutableIfNeeded (/amex/jenkins/workspace/0000138_cep-test-automation_main/node_modules/playwright-core/lib/server/registry/index.js:673:7)
+[2025-04-03T18:10:20.721Z]     at async Registry.validateHostRequirementsForExecutablesIfNeeded (/amex/jenkins/workspace/0000138_cep-test-automation_main/node_modules/playwright-core/lib/server/registry/index.js:662:43)
+[2025-04-03T18:10:20.721Z]     at async t.<anonymous> (/amex/jenkins/workspace/0000138_cep-test-automation_main/node_modules/playwright-core/lib/cli/program.js:119:7)
+[2025-04-03T18:10:27.272Z] 
+[2025-04-03T18:10:27.272Z] up to date, audited 103 packages in 54s
+[2025-04-03T18:10:27.272Z] 
+[2025-04-03T18:10:27.272Z] 9 packages are looking for funding
+[2025-04-03T18:10:27.272Z]   run `npm fund` for details
+[2025-04-03T18:10:27.272Z] 
+[2025-04-03T18:10:27.272Z] found 0 vulnerabilities
+[2025-04-03T18:10:27.272Z] + echo 'Playwright Version'
+[2025-04-03T18:10:27.272Z] Playwright Version
+[2025-04-03T18:10:27.272Z] + npm playwright --version
+[2025-04-03T18:10:27.528Z] 10.9.0
+[2025-04-03T18:10:27.528Z] + echo 'Saucectl Version'
+[2025-04-03T18:10:27.528Z] Saucectl Version
+[2025-04-03T18:10:27.528Z] + npx saucectl --version
+[2025-04-03T18:10:30.793Z] saucectl version 0.148.0
+[2025-04-03T18:10:30.793Z] (build 18d2a855b0b2f6c7242de4a8100fcf8ab9ca77bb)
+[2025-04-03T18:10:34.076Z] + npx saucectl run --no-auto-tagging
+[2025-04-03T18:10:36.599Z] Running version 0.148.0
+[2025-04-03T18:11:15.278Z] [90m11:11:10[0m [32mINF[0m Running Playwright in Sauce Labs
+[2025-04-03T18:11:15.278Z] [90m11:11:10[0m [32mINF[0m Performing tunnel readiness check... [36mtimeout=[0m30s
+[2025-04-03T18:11:15.278Z] [90m11:11:11[0m [32mINF[0m Tunnel is ready!
+[2025-04-03T18:11:15.278Z] [90m11:11:11[0m [32mINF[0m Archive created. [36mdurationMs=[0m24 [36mfileCount=[0m71 [36mlongestPathLength=[0m106 [36msize=[0m381820
+[2025-04-03T18:11:15.278Z] [90m11:11:11[0m [32mINF[0m Checking if /tmp/saucectl-app-payload-925683449/app.zip has already been uploaded previously
+[2025-04-03T18:11:15.278Z] [90m11:11:11[0m [32mINF[0m Checksum: 331e4a8a6d4b418c599479e3a9fb18a9a66b28049159a12b5db96858710393ed
+[2025-04-03T18:11:15.278Z] 
+[K[37m⠋[0m Uploading project /tmp/saucectl-app-payload-925683449/app.zip 
+[K[37m⠙[0m Uploading project /tmp/saucectl-app-payload-925683449/app.zip 
+[K[37m⠹[0m Uploading project /tmp/saucectl-app-payload-925683449/app.zip 
+[K[90m11:11:15[0m [32mINF[0m Project uploaded. [36mdurationMs=[0m2979 [36mstorageId=[0mb21a2278-70dc-4be0-92a6-1defd73c808a
+[2025-04-03T18:11:15.278Z] [90m11:11:15[0m [32mINF[0m Checking if /tmp/saucectl-app-payload-925683449/config.zip has already been uploaded previously
+[2025-04-03T18:11:15.278Z] [90m11:11:15[0m [32mINF[0m Checksum: e4824e432415756845791b9cd5bad959212b4875d28dbf9e4136568f46596ca3
+[2025-04-03T18:11:16.841Z] 
+[K[37m⠋[0m Uploading runner config /tmp/saucectl-app-payload-925683449/config.zip 
+[K[90m11:11:16[0m [32mINF[0m Runner Config uploaded. [36mdurationMs=[0m551 [36mstorageId=[0m5463e48c-3852-4ec0-8d50-76afe1dd1611
+[2025-04-03T18:11:16.842Z] [90m11:11:16[0m [32mINF[0m Launching workers. [36mconcurrency=[0m10
+[2025-04-03T18:11:16.842Z] [90m11:11:16[0m [32mINF[0m Starting suite. [36mregion=[0mus-west-1 [36msuite=[0m"Webkit Mac"
+[2025-04-03T18:11:16.842Z] [90m11:11:16[0m [32mINF[0m Starting suite. [36mregion=[0mus-west-1 [36msuite=[0m"Firefox Mac"
+[2025-04-03T18:11:16.842Z] [90m11:11:16[0m [32mINF[0m Starting suite. [36mregion=[0mus-west-1 [36msuite=[0m"Chromium Win"
+[2025-04-03T18:11:17.402Z] [90m11:11:17[0m [1m[31mERR[0m[0m Failed to pass threshold [36msuite=[0m"Chromium Win"
+[2025-04-03T18:11:17.658Z] [90m11:11:17[0m [1m[31mERR[0m[0m Failed to start suite. [31merror=[0m[31m"job start failed (404): Misconfigured -- Resolution you specified is not available for this OS/browser/version/device combo: OS: 'Windows 11', Browser: 'playwright-chromium', Version: '127.0.6533.17.', Device: 'unspecified', Screen Resolution: '1920x1440'; available resolutions: '800x600', '1024x768', '1152x864', '1280x768', '1280x800', '1280x960', '1280x1024', '1400x1050', '1440x900', '1600x1200', '1680x1050', '1920x1080', '1920x1200', '2560x1600'"[0m [36msuite=[0m"Chromium Win"
+[2025-04-03T18:11:20.174Z] [90m11:11:19[0m [32mINF[0m Suite started. [36mbrowser=[0mfirefox [36mplatform=[0m"macOS 13" [36msuite=[0m"Firefox Mac" [36murl=[0mhttps://app.saucelabs.com/tests/5d2a850cdd0242409ecdf448e138bcd0
+[2025-04-03T18:11:20.433Z] [90m11:11:20[0m [32mINF[0m Suite started. [36mbrowser=[0mwebkit [36mplatform=[0m"macOS 13" [36msuite=[0m"Webkit Mac" [36murl=[0mhttps://app.saucelabs.com/tests/cd00f92f116d4fd5aef847a82d9b7678
+[2025-04-03T18:11:27.018Z] [90m11:11:26[0m [32mINF[0m Suites in progress: 2
+[2025-04-03T18:11:36.990Z] [90m11:11:36[0m [32mINF[0m Suites in progress: 2
+[2025-04-03T18:11:46.947Z] [90m11:11:46[0m [32mINF[0m Suites in progress: 2
+[2025-04-03T18:11:56.942Z] [90m11:11:56[0m [32mINF[0m Suites in progress: 2
+[2025-04-03T18:12:06.910Z] [90m11:12:06[0m [32mINF[0m Suites in progress: 2
+[2025-04-03T18:12:16.877Z] [90m11:12:16[0m [32mINF[0m Suites in progress: 2
+[2025-04-03T18:12:26.848Z] [90m11:12:26[0m [32mINF[0m Suites in progress: 2
+[2025-04-03T18:12:34.997Z] [90m11:12:34[0m [1m[31mERR[0m[0m Failed to pass threshold [36msuite=[0m"Firefox Mac"
+[2025-04-03T18:12:36.903Z] [90m11:12:36[0m [32mINF[0m Suites in progress: 1
+[2025-04-03T18:12:37.464Z] [90m11:12:37[0m [1m[31mERR[0m[0m Suite finished. [36mpassed=[0mfalse [36msuite=[0m"Firefox Mac" [36murl=[0mhttps://app.saucelabs.com/tests/5d2a850cdd0242409ecdf448e138bcd0
+[2025-04-03T18:12:37.725Z] [90m11:12:37[0m [32mINF[0m console.log output: 
+[2025-04-03T18:12:37.725Z] Sauce Playwright Runner 2.31.0
+[2025-04-03T18:12:37.725Z] Running Playwright 1.45.2
+[2025-04-03T18:12:37.725Z] Preparing npm environment
+[2025-04-03T18:12:37.725Z] Finished
+[2025-04-03T18:12:37.725Z] 
+[2025-04-03T18:12:37.725Z] Installing packages: atob@2.1.2 btoa@1.2.1
+[2025-04-03T18:12:37.725Z] npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+[2025-04-03T18:12:37.725Z] npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+[2025-04-03T18:12:37.725Z] npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+[2025-04-03T18:12:37.725Z] npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+[2025-04-03T18:12:37.725Z] 
+[2025-04-03T18:12:37.725Z] added 632 packages, removed 12 packages, and changed 99 packages in 1m
+[2025-04-03T18:12:37.725Z] Error: Cannot find module 'allure-playwright'
+[2025-04-03T18:12:37.725Z] Require stack:
+[2025-04-03T18:12:37.725Z] - /Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/common/config.js
+[2025-04-03T18:12:37.725Z] - /Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/reporters/json.js
+[2025-04-03T18:12:37.725Z] - /Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/runner/reporters.js
+[2025-04-03T18:12:37.726Z] - /Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/runner/runner.js
+[2025-04-03T18:12:37.726Z] - /Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/program.js
+[2025-04-03T18:12:37.726Z] - /Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/@playwright/test/cli.js
+[2025-04-03T18:12:37.726Z]     at Function.Module._resolveFilename (node:internal/modules/cjs/loader:1145:15)
+[2025-04-03T18:12:37.726Z]     at Function.resolve (node:internal/modules/helpers:190:19)
+[2025-04-03T18:12:37.726Z]     at /Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/common/config.js:205:21
+[2025-04-03T18:12:37.726Z]     at Array.map (<anonymous>)
+[2025-04-03T18:12:37.726Z]     at resolveReporters (/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/common/config.js:203:110)
+[2025-04-03T18:12:37.726Z]     at new FullConfigInternal (/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/common/config.js:77:56)
+[2025-04-03T18:12:37.726Z]     at loadConfig (/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/common/configLoader.js:103:22)
+[2025-04-03T18:12:37.726Z]     at loadConfigFromFileRestartIfNeeded (/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/common/configLoader.js:258:10)
+[2025-04-03T18:12:37.726Z]     at runTests (/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/program.js:192:18)
+[2025-04-03T18:12:37.726Z]     at t.<anonymous> (/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/program.js:54:7) {
+[2025-04-03T18:12:37.726Z]   code: 'MODULE_NOT_FOUND',
+[2025-04-03T18:12:37.726Z]   requireStack: [
+[2025-04-03T18:12:37.726Z]     '/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/common/config.js',
+[2025-04-03T18:12:37.726Z]     '/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/reporters/json.js',
+[2025-04-03T18:12:37.726Z]     '/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/runner/reporters.js',
+[2025-04-03T18:12:37.726Z]     '/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/runner/runner.js',
+[2025-04-03T18:12:37.726Z]     '/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/program.js',
+[2025-04-03T18:12:37.726Z]     '/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/@playwright/test/cli.js'
+[2025-04-03T18:12:37.726Z]   ]
+[2025-04-03T18:12:37.726Z] }
+[2025-04-03T18:12:37.726Z] JUnit file generation skipped: the original JUnit file (/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/__project__/__assets__/junit.xml) from Playwright was not located.
+[2025-04-03T18:12:37.726Z]  [36msuite=[0m"Firefox Mac"
+[2025-04-03T18:12:47.677Z] [90m11:12:46[0m [32mINF[0m Suites in progress: 1
+[2025-04-03T18:12:50.942Z] [90m11:12:50[0m [1m[31mERR[0m[0m Failed to pass threshold [36msuite=[0m"Webkit Mac"
+[2025-04-03T18:12:52.842Z] [90m11:12:52[0m [1m[31mERR[0m[0m Suite finished. [36mpassed=[0mfalse [36msuite=[0m"Webkit Mac" [36murl=[0mhttps://app.saucelabs.com/tests/cd00f92f116d4fd5aef847a82d9b7678
+[2025-04-03T18:12:53.097Z] [90m11:12:52[0m [32mINF[0m console.log output: 
+[2025-04-03T18:12:53.097Z] Sauce Playwright Runner 2.31.0
+[2025-04-03T18:12:53.097Z] Running Playwright 1.45.2
+[2025-04-03T18:12:53.097Z] Preparing npm environment
+[2025-04-03T18:12:53.097Z] Finished
+[2025-04-03T18:12:53.097Z] 
+[2025-04-03T18:12:53.097Z] Installing packages: atob@2.1.2 btoa@1.2.1
+[2025-04-03T18:12:53.097Z] npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+[2025-04-03T18:12:53.097Z] npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+[2025-04-03T18:12:53.097Z] npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+[2025-04-03T18:12:53.097Z] npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+[2025-04-03T18:12:53.098Z] 
+[2025-04-03T18:12:53.098Z] added 632 packages, removed 12 packages, and changed 99 packages in 1m
+[2025-04-03T18:12:53.098Z] Error: Cannot find module 'allure-playwright'
+[2025-04-03T18:12:53.098Z] Require stack:
+[2025-04-03T18:12:53.098Z] - /Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/common/config.js
+[2025-04-03T18:12:53.098Z] - /Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/reporters/json.js
+[2025-04-03T18:12:53.098Z] - /Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/runner/reporters.js
+[2025-04-03T18:12:53.098Z] - /Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/runner/runner.js
+[2025-04-03T18:12:53.098Z] - /Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/program.js
+[2025-04-03T18:12:53.098Z] - /Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/@playwright/test/cli.js
+[2025-04-03T18:12:53.098Z]     at Function.Module._resolveFilename (node:internal/modules/cjs/loader:1145:15)
+[2025-04-03T18:12:53.098Z]     at Function.resolve (node:internal/modules/helpers:190:19)
+[2025-04-03T18:12:53.098Z]     at /Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/common/config.js:205:21
+[2025-04-03T18:12:53.098Z]     at Array.map (<anonymous>)
+[2025-04-03T18:12:53.098Z]     at resolveReporters (/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/common/config.js:203:110)
+[2025-04-03T18:12:53.098Z]     at new FullConfigInternal (/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/common/config.js:77:56)
+[2025-04-03T18:12:53.098Z]     at loadConfig (/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/common/configLoader.js:103:22)
+[2025-04-03T18:12:53.098Z]     at loadConfigFromFileRestartIfNeeded (/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/common/configLoader.js:258:10)
+[2025-04-03T18:12:53.098Z]     at runTests (/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/program.js:192:18)
+[2025-04-03T18:12:53.098Z]     at t.<anonymous> (/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/program.js:54:7) {
+[2025-04-03T18:12:53.098Z]   code: 'MODULE_NOT_FOUND',
+[2025-04-03T18:12:53.098Z]   requireStack: [
+[2025-04-03T18:12:53.098Z]     '/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/common/config.js',
+[2025-04-03T18:12:53.098Z]     '/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/reporters/json.js',
+[2025-04-03T18:12:53.098Z]     '/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/runner/reporters.js',
+[2025-04-03T18:12:53.098Z]     '/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/runner/runner.js',
+[2025-04-03T18:12:53.098Z]     '/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/playwright/lib/program.js',
+[2025-04-03T18:12:53.098Z]     '/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/node_modules/@playwright/test/cli.js'
+[2025-04-03T18:12:53.098Z]   ]
+[2025-04-03T18:12:53.098Z] }
+[2025-04-03T18:12:53.098Z] JUnit file generation skipped: the original JUnit file (/Volumes/Sauce/saucectl-runners/sauce-playwright-runner/2.31.0/bundle/__project__/__assets__/junit.xml) from Playwright was not located.
+[2025-04-03T18:12:53.099Z]  [36msuite=[0m"Webkit Mac"
+[2025-04-03T18:12:54.048Z] 
+[2025-04-03T18:12:54.048Z] 
+[2025-04-03T18:12:54.048Z]   [34;4;1mResults:[0m
+[2025-04-03T18:12:54.048Z] 
+[2025-04-03T18:12:54.048Z] 
+[2025-04-03T18:12:54.048Z]        Name                                Duration    Status    Browser        Platform    Attempts  
+[2025-04-03T18:12:54.048Z] ──────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-04-03T18:12:54.048Z]   [31m✖[0m    Chromium Win                              0s    [31mfailed[0m    chromium                          1  
+[2025-04-03T18:12:54.048Z]   [31m✖[0m    Firefox Mac                            1m18s    [31mfailed[0m    firefox 127    macOS 13           1  
+[2025-04-03T18:12:54.048Z]   [31m✖[0m    Webkit Mac                             1m33s    [31mfailed[0m    webkit 17      macOS 13           1  
+[2025-04-03T18:12:54.048Z] ──────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-04-03T18:12:54.048Z]   [31m✖[0m    3 of 3 suites have failed (100%)       1m37s                                                   
+[2025-04-03T18:12:54.048Z] 
+[2025-04-03T18:12:54.048Z]   [34mBuild Link:[0m [4mhttps://app.saucelabs.com/builds/vdc/cf3f2482984e3e3a9b505fdfea40f985[0m
+[2025-04-03T18:12:54.048Z] 
+[2025-04-03T18:12:54.048Z] [90m11:12:53[0m [31mWRN[0m Failed to download junit report. Summary may be incorrect! [31merror=[0m[31m"asset not found"[0m [36msuite=[0m"Chromium Win"
+[2025-04-03T18:12:54.048Z] [90m11:12:53[0m [31mWRN[0m Failed to download junit report. Summary may be incorrect! [31merror=[0m[31m"asset not found"[0m [36msuite=[0m"Firefox Mac"
+[2025-04-03T18:12:54.049Z] [90m11:12:53[0m [31mWRN[0m Failed to download junit report. Summary may be incorrect! [31merror=[0m[31m"asset not found"[0m [36msuite=[0m"Webkit Mac"
+[2025-04-03T18:12:56.262Z] + node -v
+[2025-04-03T18:12:56.548Z] + npm -v
+[2025-04-03T18:12:56.938Z] Masking supported pattern matches of $USERNAME or $PASSWORD
 
