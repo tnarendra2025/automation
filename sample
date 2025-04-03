@@ -1,3 +1,10 @@
+# Adding Certificates to Playwright Tests in GitHub Actions
+
+Based on your workflow and the issues in the logs, you need to properly configure certificates for your Playwright tests running in your corporate environment. Here's how to modify your workflow to handle certificates:
+
+## Updated Workflow with Certificate Configuration
+
+```yaml
 name: Playwright Tests
 on:
   push:
@@ -14,7 +21,7 @@ jobs:
       PLAYWRIGHT_WEBKIT_DOWNLOAD_HOST: https://artifactory.aexp.com/playwright-azureedge-raw-proxy
       PLAYWRIGHT_FFMPEG_DOWNLOAD_HOST: https://artifactory.aexp.com/playwright-azureedge-raw-proxy
       PLAYWRIGHT_DOWNLOAD_HOST: https://artifactory.aexp.com/playwright-azureedge-raw-proxy
-
+      NODE_EXTRA_CA_CERTS: /etc/ssl/certs/ca-certificates.crt  # Point to your corporate CA certs
 
     steps:
       - name: Checkout code
@@ -25,22 +32,42 @@ jobs:
         with:
           node-version: "18.17.0"
 
-      - name: Set npm registry
+      - name: Install system dependencies and certificates
+        run: |
+          # Install required system dependencies
+          sudo apt-get update
+          sudo apt-get install -y libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 \
+            libcups2 libdrm2 libatspi2.0-0 libx11-6 libxcomposite1 libxdamage1 \
+            libxext6 libxfixes3 libxrandr2 libgbm1 libxcb1 libxkbcommon0 \
+            libpango-1.0-0 libcairo2 libasound2 ca-certificates
+          
+          # Update certificates (if needed)
+          sudo update-ca-certificates
+
+      - name: Set npm registry and configure certificates
         run: |
           npm config set registry https://artifactory.aexp.com/api/npm/npm
-          npm install --registry=https://artifactory.aexp.com/api/npm/npm
+          npm config set cafile /etc/ssl/certs/ca-certificates.crt
+          npm config set strict-ssl true
+
       - name: Install dependencies
         run: |
-          #npm ci
           npm install --registry=https://artifactory.aexp.com/api/npm/npm
-          #npm install -D playwright/test
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+          # Install allure-playwright if needed
+          npm install allure-playwright --save-dev
 
-      - name: Run Playwright tests
+      - name: Install Playwright Browsers
         run: |
-          pwd
-                  npx playwright test acmRegistrationPage.spec.js
+          npx playwright install --with-deps
+
+      - name: Run Playwright tests with certificate configuration
+        run: |
+          # Configure Playwright to use system certificates
+          export NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
+          npx playwright test acmRegistrationPage.spec.js \
+            --config=playwright.config.js \
+            --reporter=line,allure-playwright
+
       - name: Upload test results
         uses: actions/upload-artifact@v3
         if: always()
@@ -48,3 +75,46 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+```
+
+## Key Changes Made:
+
+1. **Certificate Configuration**:
+   - Added `NODE_EXTRA_CA_CERTS` environment variable pointing to system certificates
+   - Added step to install `ca-certificates` package and update certificates
+
+2. **System Dependencies**:
+   - Explicitly installed all required system dependencies that were showing as missing in your logs
+
+3. **npm Certificate Configuration**:
+   - Set `cafile` in npm config to use your corporate CA certificates
+   - Enabled `strict-ssl` to ensure certificate validation
+
+4. **Playwright Test Execution**:
+   - Added environment variable for certificate configuration before running tests
+   - Added explicit reporter configuration
+
+## Additional Recommendations:
+
+1. **Create a `playwright.config.js`** file if you don't have one, with proper proxy settings:
+```js
+// playwright.config.js
+const config = {
+  use: {
+    // Configure HTTP proxy if needed
+    // proxy: {
+    //   server: 'http://proxy-appgw.aexp.com:9090'
+    // },
+    ignoreHTTPSErrors: false // Set to true only for testing if certificate issues persist
+  }
+};
+module.exports = config;
+```
+
+2. **If you still encounter certificate issues**, you might need to:
+   - Add your corporate root certificate to the system trust store
+   - Or temporarily set `ignoreHTTPSErrors: true` in Playwright config (not recommended for production)
+
+3. **For the Allure reporter issue**, I've added the installation of `allure-playwright` package. If you're not using Allure reports, remove the reporter from the test command.
+
+This configuration should resolve the certificate-related issues while maintaining security in your corporate environment.
