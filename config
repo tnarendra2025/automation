@@ -1,4 +1,28 @@
+//h1[normalize-space()='Register New Consumer']
+//h4[normalize-space()='Register New Consumer']
+//*[name()='path' and contains(@d,'M24 0c13.2')]
+testRigorpath
+"Please provide your consumer details below. For additional help or more information, please visit th"
 
+//h1[normalize-space()='Identification']
+testRigorpath
+"Enter details to help people identify this registration."
+
+//label[normalize-space()='Consumer Name']
+//p[contains(text(),'Make your name as descriptive as possible so you c')]
+
+//span[normalize-space()='4']
+
+//span[normalize-space()='4']
+
+div[class='margin-2-b'] div button[aria-label='Validate']
+//span[normalize-space()='20']
+
+(//span[@class='display-block css-ab09iz'])[1]
+
+AfterValidate
+
+"Name is too long"
 consumerdataForm
 [
   {
