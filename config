@@ -1,112 +1,370 @@
-// @ts-check
-const { defineConfig, devices } = require("@playwright/test");
-const path = require('path');
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config({ path: path.resolve(__dirname, '.env') });
-
-/**
- * @see https://playwright.dev/docs/test-configuration
- */
-module.exports = defineConfig({
-  testDir: "./tests",
-  timeout: 90 * 1000,
-  expect: {
-    timeout: 10000,
-  },
-  /* Run tests in files in parallel */
-  fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [
-    ["dot"], // -> console
-    ["html", { open: "on-failure" }],
-    ["allure-playwright", { outputFolder: "allure-results" }],
-  ],
-  globalSetup: "utils/globalSetup.js",
-  
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
-  use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://127.0.0.1:3000',
-
-    /* Configure HTTP proxy */
-    proxy: {
-      server: process.env.HTTP_PROXY || 'http://proxy-appgw.aexp.com:9090',
-      bypass: process.env.NO_PROXY || 'localhost,127.0.0.1,.aexp.com'
+consumerdataForm
+[
+  {
+    "description": "Test valid consumer registration",
+    "data": {
+      "name": "ValidConsumer",
+      "description": "A valid consumer description",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
     },
-
-    /* Configure SSL certificates */
-    ignoreHTTPSErrors: false, // Set to true only for debugging if needed
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: "on",
-    actionTimeout: 60000,
-    navigationTimeout: 60000,
-    screenshot: "only-on-failure",
-    video: "on",
-
-    /* Configure browser launch options */
-    launchOptions: {
-      // Point to your corporate CA certificates if needed
-      // args: ['--ignore-certificate-errors'],
-      // executablePath: process.env.PLAYWRIGHT_CHROME_EXECUTABLE_PATH
+    "expected": {
+      "validationType": "success"
     }
   },
 
-  /* Configure projects for major browsers */
-  projects: [
-    {
-      name: "chromium",
-      use: {
-        ...devices["Desktop Chrome"],
-        viewport: { width: 1272, height: 606 },
-        launchOptions: {
-          // headless: false,
-          // args: ["--start-maximized"],
-          logger: {
-            isEnabled: (name, severity) => true,
-            log: (name, severity, message, args) =>
-              console.log(`${name} [${severity}]: ${message}`, ...args),
-          },
-        },
-        // Override proxy settings if needed for specific project
-        // proxy: {
-        //   server: 'http://proxy-appgw.aexp.com:9090',
-        //   bypass: 'localhost,127.0.0.1,.aexp.com'
-        // }
-      },
+  {
+    "description": "Test consumer registration with name containing special characters",
+    "data": {
+      "name": "Consumer@#123",
+      "description": "A valid description",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
     },
+    "expected": {
+      "validationType": "success"
+    }
+  },
+  {
+    "description": "Test consumer registration with numeric name",
+    "data": {
+      "name": "12345",
+      "description": "Numeric name test",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "success"
+    }
+  },
 
-    // Uncomment other browsers as needed
-    // {
-    //   name: "firefox",
-    //   use: { ...devices["Desktop Firefox"] },
-    // },
-    // {
-    //   name: "webkit",
-    //   use: { ...devices["Desktop Safari"] },
-    // },
-  ],
+  {
+    "description": "Test consumer registration with valid @aexp.com email",
+    "data": {
+      "name": "ValidConsumer",
+      "description": "Valid description",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "success"
+    }
+  },
+  
+  {
+    "description": "Test consumer registration with uppercase name",
+    "data": {
+      "name": "VALIDCONSUMER",
+      "description": "Uppercase name",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "success"
+    }
+  },
+  {
+    "description": "Test consumer registration with lowercase name",
+    "data": {
+      "name": "validconsumer",
+      "description": "Lowercase name",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "success"
+    }
+  },
 
-  /* Global HTTP settings */
-  // httpCredentials: {
-  //   username: process.env.HTTP_AUTH_USER,
-  //   password: process.env.HTTP_AUTH_PASSWORD
-  // },
+  {
+    "description": "Test consumer registration with mixed case name",
+    "data": {
+      "name": "ValiDConsuMer",
+      "description": "Mixed case name",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "success"
+    }
+  }
+  
+]
+------------------------------------------------------------------------
+ConsumerPage 
 
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+import { expect } from "@playwright/test";
+
+class ConsumerRegistionPage {
+  constructor(page) {
+    this.page = page;
+
+    // Locators
+    this.locators = {
+      consumerName: page.locator("#name"),
+      nameValidateBtn: page.locator("//input[@id='name']//following-sibling::button"),
+      Name_Color: page.locator("span[class='display-block css-ab09iz'] svg"),
+      readWriteGroup: page.locator("#readWriteGroup"),
+      readWriteGroupValidateBtn: page.locator("//input[@id='readWriteGroup']//following-sibling::button"),
+      description: page.locator("#description"),
+      emailDlAddress: page.locator("#emailDlAddress"),
+      cancelBtn: page.locator('[data-testid="cancelBtn"]'),
+      submitBtn: page.locator('[data-testid="submitBtn"]'),
+      longConsumerNameError: page.locator('//span[text()="Name is too long"]'),
+      longDescriptionError: page.locator('//span[text()="Description is too long"]'),
+      invalidIIQGroupError: page.locator('//div/span[text()="Group ID not found in IIQ."]'),
+      invalidEmailError: page.locator('//div/span[text()="Email should be @aexp.com"]'),
+      valueCannotBeEmptyError: page.locator('//span[text()="The value cannot be empty."]'),
+      consumerHeader: page.locator('//h4[normalize-space()="Consumer Dashboard"]'),
+      section3: page.locator('[data-testid="section3"]'),
+      validatebtn_Loc: page.locator('[aria-label="Validate"]'),
+    };
+  }
+
+  async registerNewConsumer(name, description, readWriteGroup, emailDlAddress) {
+    await this.fillConsumerDetails(name, description, readWriteGroup, emailDlAddress);
+    await this.locators.section3.click();
+    await this.page.waitForTimeout(1000);
+  }
+
+  async fillConsumerDetails(name, description, readWriteGroup, emailDlAddress) {
+    await this.locators.consumerName.fill(name);
+    await this.locators.nameValidateBtn.click();
+    await this.locators.description.fill(description);
+    await this.page.waitForTimeout(1000);
+    await this.locators.readWriteGroup.fill(readWriteGroup);
+    await this.locators.readWriteGroupValidateBtn.click();
+    await this.page.waitForTimeout(1000);
+    await this.locators.emailDlAddress.fill(emailDlAddress);
+  }
+
+  async clickSubmit() {
+    await this.locators.submitBtn.click();
+  }
+
+  async clickCancel() {
+    await this.locators.cancelBtn.click();
+  }
+  async consumerName() {
+    await this.locators.consumerName.click();
+  }
+
+  async getErrorMessage(locator) {
+    await this.page.waitForSelector(locator);
+    return await this.page.locator(locator).innerText();
+  }
+
+  async getLongConsumerNameError() {
+    return await this.getErrorMessage('//span[text()="Name is too long"]');
+  }
+  
+  async getLongDescriptionError() {
+    return await this.getErrorMessage('//span[text()="Description is too long"]');
+  }
+
+  async getInvalidEmailError() {
+    return await this.getErrorMessage('//div/span[text()="Email should be @aexp.com"]');
+  }
+
+  async getInvalidIIQGroupError() {
+    return await this.getErrorMessage('//div/span[text()="Group ID not found in IIQ."]');
+  }
+
+  async getValueCannotBeEmptyError() {
+    return await this.getErrorMessage('//span[text()="The value cannot be empty."]');
+  }
+
+  async expectConsumerHeaderToBeVisible() {
+    await expect(this.locators.consumerHeader).toBeVisible();
+    await expect(this.locators.consumerHeader).toContainText("Consumer Dashboard");
+  }
+
+  async getRegistrationParagraphText(selectors) {
+    return await Promise.all(selectors.map(selector => selector.innerText()));
+  }
+
+
+}
+
+export default ConsumerRegistionPage;
+-----------------------------------------
+consumerPageTest.spec.js
+import { test, expect } from "@playwright/test";
+import consumerFromData from "../../data/consumerFromData.json";
+import HomePage from "../../pages/commonPage/homePage.js";
+import ConsumerRegistionPage from "../../pages/consumerPage/consumerPage.js";
+import { CONSUMER_RESGISTRATION_URL } from "../../data/Constant/constent.js";
+
+test.describe("Consumer Details and Registration Page Validation", () => {
+  let page;
+  let homePage;
+  let consumerRegistionPage;
+
+  test.beforeEach(async ({ browser }) => {
+    page = await browser.newPage();
+    await page.goto("https://hyperdrive-qa.aexp.com/");
+    homePage = new HomePage(page);
+    await homePage.login("nthodeti", "Hyperdrive@UI@5814");
+    await page.waitForLoadState("domcontentloaded");
+  });
+  
+  // const navigateToConsumerRegistration = async () => {
+  //   await homePage.profile();
+  //   await homePage.selectConsumer();
+  //   await homePage.addnewRegistration();
+  //   consumerRegistionPage = new ConsumerRegistionPage(page);
+  // };
+
+  // producerFromData.forEach(({ description, data, expected }) => {
+  //   test(description, async () => {
+  //     let x = Math.floor(Math.random() * 1000 + 1);
+  //     const homePage = new HomePage(page);
+  //     await homePage.profile();
+  //     await homePage.selectProducer();
+  //     await homePage.addnewRegistration();
+  //     const producerRegistionPage = new ProducerRegistionPage(page);
+  //     await producerRegistionPage.registernewProducer(
+  //       data.name + x,
+  //       data.discription,
+  //       data.carId,
+  //       data.readWriteGroup,
+  //       data.emailDlAddress
+  //     );
+  //     await page.waitForTimeout(2000);
+  //     switch (expected.validationType) {
+  //       case "success":
+  //         await expect
+  //           .soft(page)
+  //           .toHaveURL(
+  //             "https://hyperdrive-dev.aexp.com/producer/dashboard/addparticipant"
+  //           );
+  //         break;
+  //       case "Name is too long":
+  //         console.log(
+  //           "Print the value of long producer name:",
+  //           await producerRegistionPage.getTxtlongProducer()
+  //         );
+  //         await expect
+  //           .soft(await producerRegistionPage.getTxtlongProducer())
+  //           .toContain("Name is too long");
+  //         break;
+  //       case "Description is too long":
+  //         await expect
+  //           .soft(await producerRegistionPage.getTxtlongDescription())
+  //           .toContain("Description is too long");
+  //         break;
+  //       case "Email should be @aexp.com":
+  //         await expect
+  //           .soft(await producerRegistionPage.getTxtInvalidEmail())
+  //           .toContain("Email should be @aexp.com");
+  //         break;
+  //       case "Invalid CAR ID":
+  //         await expect
+  //           .soft(await producerRegistionPage.getTxtInvalidCarID())
+  //           .toContain("Invalid CAR ID");
+  //         break;
+  //       case "Invalid IIQ Group":
+  //         await expect
+  //           .soft(await producerRegistionPage.getTxtInvalidReadWrite())
+  //           .toContain("Invalid IIQ Group");
+  //         break;
+  //       case "Value cannot be empty":
+  //         await expect
+  //           .soft(await producerRegistionPage.getTxtValuecannotBeEmpty())
+  //           .toContain("Value cannot be empty");
+  //         break;
+  //       default:
+  //         throw new Error(
+  //           `Unhandled validation type: ${expected.validationType}`
+  //         );
+  //     }
+  //   });
+  // });
+
+  consumerFromData.forEach(({ description, data, expected }) => {
+    test(description, async () => {
+      const randomSuffix = Math.floor(Math.random() * 1000 + 1);
+      const homePage = new HomePage(page);
+      //await homePage.selectaddparticipant();
+      await homePage.profile();
+      await homePage.selectConsumer();
+      await homePage.addnewRegistration();
+     // await page.waitForTimeout(2000);
+      const consumerRegistionPage = new ConsumerRegistionPage(page);
+     // await navigateToConsumerRegistration();
+      
+      // Registering a new consumer
+      await consumerRegistionPage.registerNewConsumer(
+        `${data.name}${randomSuffix}`,
+        data.name,
+        data.description,
+        data.readWriteGroup,
+        data.emailDlAddress
+      );
+
+      await page.waitForTimeout(2000);
+      await validateConsumerRegistration(expected.validationType);
+    });
+  });
+
+  const validateConsumerRegistration = async (validationType) => {
+    const validationMessages = {
+      success: async () => {
+        await expect.soft(page).toHaveURL("https://hyperdrive-qa.aexp.com/consumer/addparticipant");
+      },
+      "Name is too long": async () => {                                                   
+        await validateErrorMessage(await consumerRegistionPage.getLongConsumerNameError(), "Name is too long");
+      },
+      "Description is too long": async () => {
+        await validateErrorMessage(await consumerRegistionPage.getLongDescriptionError(), "Description is too long");
+      },
+      "Email should be @aexp.com": async () => {
+        await validateErrorMessage(await consumerRegistionPage.getInvalidEmailError(), "Email should be @aexp.com");
+      },
+      "Invalid IIQ Group": async () => {
+        await validateErrorMessage(await consumerRegistionPage.getInvalidIIQGroupError(), "Group ID not found in IIQ.");
+      },
+      "Group ID not found in IIQ": async () => {
+        await validateErrorMessage(await consumerRegistionPage.getInvalidIIQGroupError(), "Group ID not found in IIQ.");
+      },
+      "Value cannot be empty": async () => {
+        await validateErrorMessage(await consumerRegistionPage.getValueCannotBeEmptyError(), "The value cannot be empty.");
+      },
+    };
+
+    if (validationMessages[validationType]) {
+      await validationMessages[validationType]();
+    } else {
+      throw new Error(`Unhandled validation type: ${validationType}`);
+    }
+  };
+
+  const validateErrorMessage = async (actualMessage, expectedMessage) => {
+    console.log("Actual message:", actualMessage);
+    await expect.soft(actualMessage).toContain(expectedMessage);
+  };
+
+  test("Verify user action menu", async () => {
+    await homePage.profile();
+    await homePage.userActionMenuButtonVisiable();
+  });
+
+  test("Verified background color of Name ", async () => {
+    await navigateToConsumerRegistration();
+    await consumerRegistionPage.locators.consumerName.fill("Test0009");
+    await consumerRegistionPage.locators.nameValidateBtn.click();
+    await consumerRegistionPage.locators.Name_Color.click();
+    const element = await consumerRegistionPage.locators.Name_Color;
+    await homePage.backGroundColor(element);
+  });
+
+  test.afterEach(async () => {
+    await homePage.quit();
+  });
+  
+
 });
+
+
+
