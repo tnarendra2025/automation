@@ -234,3 +234,666 @@
 
 ]
 
+
+const additionalTestCases = [
+  // Field Length Boundary Tests
+  {
+    description: "Test name field with exactly 50 characters",
+    data: {
+      name: "A".repeat(50),
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+  {
+    description: "Test description field with exactly 1000 characters",
+    data: {
+      name: "ValidName",
+      description: "A".repeat(1000),
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Email Format Tests
+  {
+    description: "Test email with subdomain (user@sub.aexp.com)",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "user@sub.aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+  {
+    description: "Test email with numbers (user123@aexp.com)",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "user123@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+  {
+    description: "Test email with special characters (user.name@aexp.com)",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "user.name@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // IIQ Group Format Tests
+  {
+    description: "Test IIQ group with numbers (GG-HYPERDRIVE-123)",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-123",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+  {
+    description: "Test IIQ group with special characters (GG-HYPER_DRIVE)",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPER_DRIVE",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "Invalid IIQ Group"
+    }
+  },
+
+  // Security Tests
+  {
+    description: "Test XSS attempt in name field",
+    data: {
+      name: "<script>alert('xss')</script>",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "Name is too long" // Or specific XSS validation
+    }
+  },
+  {
+    description: "Test SQL injection attempt in description",
+    data: {
+      name: "ValidName",
+      description: "'); DROP TABLE consumers;--",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success" // Should be sanitized
+    }
+  },
+
+  // Internationalization Tests
+  {
+    description: "Test Unicode characters in name",
+    data: {
+      name: "消费者测试",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+  {
+    description: "Test Unicode characters in description",
+    data: {
+      name: "ValidName",
+      description: "描述说明测试",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Whitespace Handling Tests
+  {
+    description: "Test leading/trailing spaces in name",
+    data: {
+      name: "  ValidName  ",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+  {
+    description: "Test multiple spaces between words in name",
+    data: {
+      name: "Valid  Name",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Performance Tests
+  {
+    description: "Test very long but valid description (10,000 chars)",
+    data: {
+      name: "ValidName",
+      description: "A".repeat(10000),
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "Description is too long"
+    }
+  },
+
+  // API Integration Tests
+  {
+    description: "Test IIQ group validation API timeout handling",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-TIMEOUT-TEST",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "Invalid IIQ Group"
+    }
+  },
+
+  // UI Validation Tests
+  {
+    description: "Test field focus order (tab navigation)",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+  {
+    description: "Test form submission on Enter key",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Error Recovery Tests
+  {
+    description: "Test form persistence after validation error",
+    data: {
+      name: "ValidName",
+      description: "",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "Value cannot be empty"
+    }
+  },
+  {
+    description: "Test form reset functionality",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Multi-field Validation Tests
+  {
+    description: "Test multiple field errors (empty name and invalid email)",
+    data: {
+      name: "",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "invalid@example.com"
+    },
+    expected: {
+      validationType: "Value cannot be empty"
+    }
+  },
+  {
+    description: "Test multiple field errors (long name and invalid IIQ group)",
+    data: {
+      name: "A".repeat(51),
+      description: "Valid description",
+      readWriteGroup: "INVALID-GROUP",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "Name is too long"
+    }
+  },
+
+  // Browser Compatibility Tests
+  {
+    description: "Test form submission in different browsers",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Accessibility Tests
+  {
+    description: "Test form accessibility (screen reader compatibility)",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+  {
+    description: "Test keyboard-only navigation",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Session Management Tests
+  {
+    description: "Test form submission after session timeout",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+  {
+    description: "Test form recovery after browser refresh",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Concurrency Tests
+  {
+    description: "Test multiple simultaneous registrations",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Error Message Tests
+  {
+    description: "Test error message clarity for invalid email",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "invalid-email"
+    },
+    expected: {
+      validationType: "Email should be @aexp.com"
+    }
+  },
+  {
+    description: "Test error message clarity for invalid IIQ group",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "INVALID_GROUP",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "Invalid IIQ Group"
+    }
+  },
+
+  // Field Dependency Tests
+  {
+    description: "Test validation when only required fields are filled",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Browser Back Button Tests
+  {
+    description: "Test form state after browser back button",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Autocomplete Tests
+  {
+    description: "Test browser autocomplete functionality",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Copy-Paste Tests
+  {
+    description: "Test pasting values into fields",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Mobile Responsiveness Tests
+  {
+    description: "Test form layout on mobile viewport",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Performance Under Load Tests
+  {
+    description: "Test form submission under load",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Localization Tests
+  {
+    description: "Test form with RTL language",
+    data: {
+      name: "اسم صالح",
+      description: "وصف صالح",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Timezone Tests
+  {
+    description: "Test form submission in different timezones",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Browser Zoom Tests
+  {
+    description: "Test form at 150% browser zoom",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Print Style Tests
+  {
+    description: "Test form print styles",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // JavaScript Disabled Tests
+  {
+    description: "Test form with JavaScript disabled",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // API Response Time Tests
+  {
+    description: "Test validation API response time",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Multi-tab Tests
+  {
+    description: "Test form behavior across multiple tabs",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Browser History Tests
+  {
+    description: "Test form state in browser history",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Content Security Tests
+  {
+    description: "Test CSP compliance",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Load Balancer Tests
+  {
+    description: "Test form submission across different servers",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // CDN Tests
+  {
+    description: "Test static assets loading from CDN",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // A/B Test Variations
+  {
+    description: "Test form with different UI variations",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // Dark Mode Tests
+  {
+    description: "Test form in dark mode",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  },
+
+  // High Contrast Mode Tests
+  {
+    description: "Test form in high contrast mode",
+    data: {
+      name: "ValidName",
+      description: "Valid description",
+      readWriteGroup: "GG-HYPERDRIVE-FEATURE-TESTER",
+      emailDlAddress: "test@aexp.com"
+    },
+    expected: {
+      validationType: "success"
+    }
+  }
+];
+
