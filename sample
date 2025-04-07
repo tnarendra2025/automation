@@ -1,120 +1,203 @@
-# Adding Certificates to Playwright Tests in GitHub Actions
+import { test, expect } from "@playwright/test";
+import consumerFromData from "../../data/consumerFromData.json";
+import HomePage from "../../pages/commonPage/homePage.js";
+import ConsumerRegistionPage from "../../pages/consumerPage/consumerPage.js";
+import { CONSUMER_RESGISTRATION_URL } from "../../data/Constant/constent.js";
 
-Based on your workflow and the issues in the logs, you need to properly configure certificates for your Playwright tests running in your corporate environment. Here's how to modify your workflow to handle certificates:
+test.describe("Consumer Details and Registration Page Validation", () => {
+  let page;
+  let homePage;
+  let consumerRegistionPage;
 
-## Updated Workflow with Certificate Configuration
+  test.beforeEach(async ({ browser }) => {
+    page = await browser.newPage();
+    await page.goto("https://hyperdrive-qa.aexp.com/");
+    homePage = new HomePage(page);
+    await homePage.login("nthodeti", "Hyperdrive@UI@5814");
+    await page.waitForLoadState("domcontentloaded");
+  });
+  
+  const navigateToConsumerRegistration = async () => {
+    await homePage.profile();
+    await homePage.selectConsumer();
+    await homePage.addnewRegistration();
+    consumerRegistionPage = new ConsumerRegistionPage(page);
+  };
 
-```yaml
-name: Playwright Tests
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-jobs:
-  test:
-    runs-on: aexp-ubuntu-latest-medium
-    
-    env:
-      PLAYWRIGHT_CHROMIUM_DOWNLOAD_HOST: https://artifactory.aexp.com/playwright-azureedge-raw-proxy
-      PLAYWRIGHT_FIREFOX_DOWNLOAD_HOST: https://artifactory.aexp.com/playwright-azureedge-raw-proxy
-      PLAYWRIGHT_WEBKIT_DOWNLOAD_HOST: https://artifactory.aexp.com/playwright-azureedge-raw-proxy
-      PLAYWRIGHT_FFMPEG_DOWNLOAD_HOST: https://artifactory.aexp.com/playwright-azureedge-raw-proxy
-      PLAYWRIGHT_DOWNLOAD_HOST: https://artifactory.aexp.com/playwright-azureedge-raw-proxy
-      NODE_EXTRA_CA_CERTS: /etc/ssl/certs/ca-certificates.crt  # Point to your corporate CA certs
+  consumerFromData.forEach(({ description, data, expected }) => {
+    test(description, async () => {
+      const randomSuffix = Math.floor(Math.random() * 1000 + 1);
+      await navigateToConsumerRegistration();
+      
+      // Registering a new consumer
+      await consumerRegistionPage.registerNewConsumer(
+        `${data.name}${randomSuffix}`,
+        data.name,
+        data.description,
+        data.readWriteGroup,
+        data.emailDlAddress
+      );
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      await page.waitForTimeout(2000);
+      await validateConsumerRegistration(expected.validationType);
+    });
+  });
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18.17.0"
+  const validateConsumerRegistration = async (validationType) => {
+    const validationMessages = {
+      success: async () => {
+        await expect.soft(page).toHaveURL("https://hyperdrive-qa.aexp.com/consumer/addparticipant");
+        //await expect.soft(page).toHaveURL("https://hyperdrive-dev.aexp.com/consumer/dashboard/addparticipant");
+      },
+      "Name is too long": async () => {
+        await validateErrorMessage(await consumerRegistionPage.getLongConsumerNameError(), "Name is too long");
+      },
+      "Description is too long": async () => {
+        await validateErrorMessage(await consumerRegistionPage.getLongDescriptionError(), "Description is too long");
+      },
+      "Email should be @aexp.com": async () => {
+        await validateErrorMessage(await consumerRegistionPage.getInvalidEmailError(), "Email should be @aexp.com");
+      },
+      "Invalid IIQ Group": async () => {
+        await validateErrorMessage(await consumerRegistionPage.getInvalidIIQGroupError(), "Group ID not found in IIQ.");
+      },
+      "Group ID not found in IIQ": async () => {
+        await validateErrorMessage(await consumerRegistionPage.getInvalidIIQGroupError(), "Group ID not found in IIQ.");
+      },
+      "Value cannot be empty": async () => {
+        await validateErrorMessage(await consumerRegistionPage.getValueCannotBeEmptyError(), "The value cannot be empty.");
+      },
+    };
 
-      - name: Install system dependencies and certificates
-        run: |
-          # Install required system dependencies
-          sudo apt-get update
-          sudo apt-get install -y libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 \
-            libcups2 libdrm2 libatspi2.0-0 libx11-6 libxcomposite1 libxdamage1 \
-            libxext6 libxfixes3 libxrandr2 libgbm1 libxcb1 libxkbcommon0 \
-            libpango-1.0-0 libcairo2 libasound2 ca-certificates
-          
-          # Update certificates (if needed)
-          sudo update-ca-certificates
+    if (validationMessages[validationType]) {
+      await validationMessages[validationType]();
+    } else {
+      throw new Error(`Unhandled validation type: ${validationType}`);
+    }
+  };
 
-      - name: Set npm registry and configure certificates
-        run: |
-          npm config set registry https://artifactory.aexp.com/api/npm/npm
-          npm config set cafile /etc/ssl/certs/ca-certificates.crt
-          npm config set strict-ssl true
+  const validateErrorMessage = async (actualMessage, expectedMessage) => {
+    console.log("Actual message:", actualMessage);
+    await expect.soft(actualMessage).toContain(expectedMessage);
+  };
 
-      - name: Install dependencies
-        run: |
-          npm install --registry=https://artifactory.aexp.com/api/npm/npm
-          # Install allure-playwright if needed
-          npm install allure-playwright --save-dev
+  test("Verify user action menu", async () => {
+    await homePage.profile();
+    await homePage.userActionMenuButtonVisiable();
+  });
 
-      - name: Install Playwright Browsers
-        run: |
-          npx playwright install --with-deps
+  test("Verified background color of Name ", async () => {
+    await navigateToConsumerRegistration();
+    await consumerRegistionPage.locators.consumerName.fill("Test0009");
+    await consumerRegistionPage.locators.nameValidateBtn.click();
+    await consumerRegistionPage.locators.Name_Color.click();
+    const element = await consumerRegistionPage.locators.Name_Color;
+    await homePage.backGroundColor(element);
+  });
 
-      - name: Run Playwright tests with certificate configuration
-        run: |
-          # Configure Playwright to use system certificates
-          export NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
-          npx playwright test acmRegistrationPage.spec.js \
-            --config=playwright.config.js \
-            --reporter=line,allure-playwright
 
-      - name: Upload test results
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
-```
+  test('Verify Profile Menu Click', async () => {
+    consumerRegistionPage = new ConsumerRegistionPage(page);
+    await consumerRegistionPage.locators.profileMenu.click();
+    const element = await consumerRegistionPage.locators.profileMenu;
+    await homePage.verifyElement(element);
+  });
 
-## Key Changes Made:
+  test('Verify Consumer Option Selection', async () => {
+    consumerRegistionPage = new ConsumerRegistionPage(page);
+    await consumerRegistionPage.locators.consumerOption.click();
+    const element = await consumerRegistionPage.locators.consumerOption;
+    await homePage.verifyElement(element);
+  });
 
-1. **Certificate Configuration**:
-   - Added `NODE_EXTRA_CA_CERTS` environment variable pointing to system certificates
-   - Added step to install `ca-certificates` package and update certificates
+  test('Verify Add New Registration Click', async () => {
+    consumerRegistionPage = new ConsumerRegistionPage(page);
+    await consumerRegistionPage.locators.addNewRegistration.click();
+    const element = await consumerRegistionPage.locators.addNewRegistration;
+    await homePage.verifyElement(element);
+  });
 
-2. **System Dependencies**:
-   - Explicitly installed all required system dependencies that were showing as missing in your logs
+  test('Verify Name Label Interaction', async () => {
+    consumerRegistionPage = new ConsumerRegistionPage(page);
+    await consumerRegistionPage.locators.nameLabel.click();
+    const element = await consumerRegistionPage.locators.nameLabel;
+    await homePage.verifyElement(element);
+  });
 
-3. **npm Certificate Configuration**:
-   - Set `cafile` in npm config to use your corporate CA certificates
-   - Enabled `strict-ssl` to ensure certificate validation
+  test('Verify Name Help Text Interaction', async () => {
+    consumerRegistionPage = new ConsumerRegistionPage(page);
+    await consumerRegistionPage.locators.nameHelpText.click();
+    const element = await consumerRegistionPage.locators.nameHelpText;
+    await homePage.verifyElement(element);
+  });
 
-4. **Playwright Test Execution**:
-   - Added environment variable for certificate configuration before running tests
-   - Added explicit reporter configuration
+  test('Verify Description Field Interaction', async () => {
+    consumerRegistionPage = new ConsumerRegistionPage(page);
+    await consumerRegistionPage.locators.descriptionField.click();
+    const element = await consumerRegistionPage.locators.descriptionField;
+    await homePage.verifyElement(element);
+  });
 
-## Additional Recommendations:
+  test('Verify Description Label Interaction', async () => {
+    consumerRegistionPage = new ConsumerRegistionPage(page);
+    await consumerRegistionPage.locators.descriptionLabel.click();
+    const element = await consumerRegistionPage.locators.descriptionLabel;
+    await homePage.verifyElement(element);
+  });
 
-1. **Create a `playwright.config.js`** file if you don't have one, with proper proxy settings:
-```js
-// playwright.config.js
-const config = {
-  use: {
-    // Configure HTTP proxy if needed
-    // proxy: {
-    //   server: 'http://proxy-appgw.aexp.com:9090'
-    // },
-    ignoreHTTPSErrors: false // Set to true only for testing if certificate issues persist
-  }
-};
-module.exports = config;
-```
+  test('Verify Read Write Group Field Interaction', async () => {
+    consumerRegistionPage = new ConsumerRegistionPage(page);
+    await consumerRegistionPage.locators.readWriteGroupField.click();
+    const element = await consumerRegistionPage.locators.readWriteGroupField;
+    await homePage.verifyElement(element);
+  });
 
-2. **If you still encounter certificate issues**, you might need to:
-   - Add your corporate root certificate to the system trust store
-   - Or temporarily set `ignoreHTTPSErrors: true` in Playwright config (not recommended for production)
+  test('Verify Read Write Group Label Interaction', async () => {
+    consumerRegistionPage = new ConsumerRegistionPage(page);
+    await consumerRegistionPage.locators.readWriteGroupLabel.click();
+    const element = await consumerRegistionPage.locators.readWriteGroupLabel;
+    await homePage.verifyElement(element);
+  });
 
-3. **For the Allure reporter issue**, I've added the installation of `allure-playwright` package. If you're not using Allure reports, remove the reporter from the test command.
+  test('Verify Email Field Interaction', async () => {
+    consumerRegistionPage = new ConsumerRegistionPage(page);
+    await consumerRegistionPage.locators.emailField.click();
+    const element = await consumerRegistionPage.locators.emailField;
+    await homePage.verifyElement(element);
+  });
 
-This configuration should resolve the certificate-related issues while maintaining security in your corporate environment.
+  test('Verify Email Label Interaction', async () => {
+    consumerRegistionPage = new ConsumerRegistionPage(page);
+    await consumerRegistionPage.locators.emailLabel.click();
+    const element = await consumerRegistionPage.locators.emailLabel;
+    await homePage.verifyElement(element);
+  });
+
+  test('Verify Submit Button Click', async () => {
+    consumerRegistionPage = new ConsumerRegistionPage(page);
+    await consumerRegistionPage.locators.submitButton.click();
+    const element = await consumerRegistionPage.locators.submitButton;
+    await homePage.verifyElement(element);
+  });
+
+  test('Verify Cancel Button Click', async () => {
+    consumerRegistionPage = new ConsumerRegistionPage(page);
+    await consumerRegistionPage.locators.cancelButton.click();
+    const element = await consumerRegistionPage.locators.cancelButton;
+    await homePage.verifyElement(element);
+  });
+
+  test('Verify Name Counter Interaction', async () => {
+    consumerRegistionPage = new ConsumerRegistionPage(page);
+    await consumerRegistionPage.locators.nameCounter.click();
+    const element = await consumerRegistionPage.locators.nameCounter;
+    await homePage.verifyElement(element);
+  });
+
+  test.afterEach(async () => {
+    await homePage.quit();
+  });
+  
+
+});
+
