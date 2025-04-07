@@ -1,0 +1,37 @@
+import { test, expect } from '@playwright/test';
+
+test('test', async ({ page }) => {
+  await page.goto('https://authbluesvcqa-vip.phx.aexp.com/ssoi/auth?method=GET&requestid=30642413-7b3c-42c1-9948-90229312f5e0&target=https%3A%2F%2Fhyperdrive-qa.aexp.com%2F');
+  await page.getByRole('textbox', { name: 'User ID' }).click();
+  await page.getByRole('textbox', { name: 'User ID' }).fill('nthodeti');
+  await page.getByRole('textbox', { name: 'Password' }).click();
+  await page.getByRole('textbox', { name: 'Password' }).fill('Hyperdrive@UI@5814');
+  await page.getByRole('button', { name: 'Log In' }).click();
+  await page.goto('https://hyperdrive-qa.aexp.com/consumer/639');
+  await page.getByRole('button', { name: 'Account Icon narendra (' }).click();
+  await page.locator('#participants').selectOption('482');
+  await page.goto('https://hyperdrive-qa.aexp.com/consumer/482');
+  await page.locator('#participants').selectOption('390');
+  await page.goto('https://hyperdrive-qa.aexp.com/consumer/390/viewusecase?useCaseId=44ea4881-7e3e-4db5-9639-45aec41219d2');
+  await page.locator('#participants').selectOption('');
+  await page.goto('https://hyperdrive-qa.aexp.com/consumer/addparticipant');
+  await page.getByRole('textbox', { name: 'Consumer Name' }).fill('test_April');
+  await page.getByRole('textbox', { name: 'Consumer Description' }).fill('afadsfads');
+  await page.getByRole('textbox', { name: 'Read Only Group (Optional)' }).fill('GG-HYPERDRIVE-FEATURE-TESTER');
+  await page.getByRole('textbox', { name: 'Email Distribution Address' }).fill('aa@aexp.com');
+  await page.getByRole('textbox', { name: 'Email Distribution Address' }).press('NumLock');
+  await page.getByRole('textbox', { name: 'Read/Write Group' }).fill('GG-HYPERDRIVE-FEATURE-TESTER');
+  await page.goto('https://hyperdrive-qa.aexp.com/consumer/643/addusecase');
+  await page.locator('#useCaseName').fill('test_April');
+  const page1Promise = page.waitForEvent('popup');
+  await page.locator('#totalAmt').fill('33');
+  const page1 = await page1Promise;
+  await page1.goto('https://login.microsoftonline.com/66295b3b-c4fd-41af-a077-c0ec2a40e369/oauth2/authorize?client%5Fid=00000003%2D0000%2D0ff1%2Dce00%2D000000000000&response%5Fmode=form%5Fpost&response%5Ftype=code%20id%5Ftoken&resource=00000003%2D0000%2D0ff1%2Dce00%2D000000000000&scope=openid&nonce=EA86204FD5443DE43E86FD4A6CE8F37D402EC5558C713072%2D1A1582266D4DA6043C7E40262624C304A43B2F0B6C65A7FB7A1A3051F811C668&redirect%5Furi=https%3A%2F%2Fspaces%2Eaexp%2Ecom%2F%5Fforms%2Fdefault%2Easpx&state=OD0w&claims=%7B%22id%5Ftoken%22%3A%7B%22xms%5Fcc%22%3A%7B%22values%22%3A%5B%22CP1%22%5D%7D%7D%7D&wsucxt=1&cobrandid=11bd8083%2D87e0%2D41b5%2Dbb78%2D0bc43c8a8e8a&client%2Drequest%2Did=da3c92a1%2Db0e8%2D8000%2D98c3%2D51b1d5dbc906&sso_reload=true');
+  await page.locator('#projectDetail').fill('https://hyperdrive-qa.aexp.com/consumer/643/addusecase');
+  await page.goto('https://hyperdrive-qa.aexp.com/consumer/643/reqaccess/requestaccess/useCasePurpose?useCaseId=cb51f8ff-1620-45c6-ac87-ca467f4908c5&acsReqId=');
+  await page.getByRole('textbox', { name: 'Use Case Purpose' }).fill('Test');
+  await page.getByRole('textbox', { name: 'CAR ID' }).fill('500000138');
+  await page.goto('https://hyperdrive-qa.aexp.com/consumer/643/reqaccess/requestaccess/sourceAndEventTypes?useCaseId=cb51f8ff-1620-45c6-ac87-ca467f4908c5&acsReqId=f7462c1a-ec15-4b7a-ac99-875f49f635bb');
+  await page.locator('#location').selectOption('Global Processing');
+  await page.goto('https://hyperdrive-qa.aexp.com/consumer/643/viewusecase?useCaseId=cb51f8ff-1620-45c6-ac87-ca467f4908c5');
+});
