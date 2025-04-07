@@ -1,29 +1,3 @@
-//h1[normalize-space()='Register New Consumer']
-//h4[normalize-space()='Register New Consumer']
-//*[name()='path' and contains(@d,'M24 0c13.2')]
-testRigorpath
-"Please provide your consumer details below. For additional help or more information, please visit th"
-
-//h1[normalize-space()='Identification']
-testRigorpath
-"Enter details to help people identify this registration."
-
-//label[normalize-space()='Consumer Name']
-//p[contains(text(),'Make your name as descriptive as possible so you c')]
-
-//span[normalize-space()='4']
-
-//span[normalize-space()='4']
-
-div[class='margin-2-b'] div button[aria-label='Validate']
-//span[normalize-space()='20']
-
-(//span[@class='display-block css-ab09iz'])[1]
-
-AfterValidate
-
-"Name is too long"
-consumerdataForm
 [
   {
     "description": "Test valid consumer registration",
@@ -37,7 +11,54 @@ consumerdataForm
       "validationType": "success"
     }
   },
-
+  {
+    "description": "Test consumer registration with long name",
+    "data": {
+      "name": "ThisIsAVeryLongConsumerNameExceedingTheLimit",
+      "description": "Description is fine",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "Name is too long"
+    }
+  },
+  {
+    "description": "Test consumer registration with empty description",
+    "data": {
+      "name": "ValidConsumer",
+      "description": "",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "Value cannot be empty"
+    }
+  },
+  {
+    "description": "Test consumer registration with empty email",
+    "data": {
+      "name": "ValidConsumer",
+      "description": "A valid description",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": ""
+    },
+    "expected": {
+      "validationType": "Value cannot be empty"
+    }
+  },
+  {
+    "description": "Test consumer registration with invalid IIQ group",
+    "data": {
+      "name": "ValidConsumer",
+      "description": "A valid description",
+      "readWriteGroup": "invalidIIQGroup",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "Invalid IIQ Group"
+    }
+  },
   {
     "description": "Test consumer registration with name containing special characters",
     "data": {
@@ -62,7 +83,6 @@ consumerdataForm
       "validationType": "success"
     }
   },
-
   {
     "description": "Test consumer registration with valid @aexp.com email",
     "data": {
@@ -75,7 +95,6 @@ consumerdataForm
       "validationType": "success"
     }
   },
-  
   {
     "description": "Test consumer registration with uppercase name",
     "data": {
@@ -100,7 +119,6 @@ consumerdataForm
       "validationType": "success"
     }
   },
-
   {
     "description": "Test consumer registration with mixed case name",
     "data": {
@@ -112,283 +130,17 @@ consumerdataForm
     "expected": {
       "validationType": "success"
     }
-  }
-  
-]
-------------------------------------------------------------------------
-ConsumerPage 
-
-import { expect } from "@playwright/test";
-
-class ConsumerRegistionPage {
-  constructor(page) {
-    this.page = page;
-
-    // Locators
-    this.locators = {
-      consumerName: page.locator("#name"),
-      nameValidateBtn: page.locator("//input[@id='name']//following-sibling::button"),
-      Name_Color: page.locator("span[class='display-block css-ab09iz'] svg"),
-      readWriteGroup: page.locator("#readWriteGroup"),
-      readWriteGroupValidateBtn: page.locator("//input[@id='readWriteGroup']//following-sibling::button"),
-      description: page.locator("#description"),
-      emailDlAddress: page.locator("#emailDlAddress"),
-      cancelBtn: page.locator('[data-testid="cancelBtn"]'),
-      submitBtn: page.locator('[data-testid="submitBtn"]'),
-      longConsumerNameError: page.locator('//span[text()="Name is too long"]'),
-      longDescriptionError: page.locator('//span[text()="Description is too long"]'),
-      invalidIIQGroupError: page.locator('//div/span[text()="Group ID not found in IIQ."]'),
-      invalidEmailError: page.locator('//div/span[text()="Email should be @aexp.com"]'),
-      valueCannotBeEmptyError: page.locator('//span[text()="The value cannot be empty."]'),
-      consumerHeader: page.locator('//h4[normalize-space()="Consumer Dashboard"]'),
-      section3: page.locator('[data-testid="section3"]'),
-      validatebtn_Loc: page.locator('[aria-label="Validate"]'),
-    };
-  }
-
-  async registerNewConsumer(name, description, readWriteGroup, emailDlAddress) {
-    await this.fillConsumerDetails(name, description, readWriteGroup, emailDlAddress);
-    await this.locators.section3.click();
-    await this.page.waitForTimeout(1000);
-  }
-
-  async fillConsumerDetails(name, description, readWriteGroup, emailDlAddress) {
-    await this.locators.consumerName.fill(name);
-    await this.locators.nameValidateBtn.click();
-    await this.locators.description.fill(description);
-    await this.page.waitForTimeout(1000);
-    await this.locators.readWriteGroup.fill(readWriteGroup);
-    await this.locators.readWriteGroupValidateBtn.click();
-    await this.page.waitForTimeout(1000);
-    await this.locators.emailDlAddress.fill(emailDlAddress);
-  }
-
-  async clickSubmit() {
-    await this.locators.submitBtn.click();
-  }
-
-  async clickCancel() {
-    await this.locators.cancelBtn.click();
-  }
-  async consumerName() {
-    await this.locators.consumerName.click();
-  }
-
-  async getErrorMessage(locator) {
-    await this.page.waitForSelector(locator);
-    return await this.page.locator(locator).innerText();
-  }
-
-  async getLongConsumerNameError() {
-    return await this.getErrorMessage('//span[text()="Name is too long"]');
-  }
-  
-  async getLongDescriptionError() {
-    return await this.getErrorMessage('//span[text()="Description is too long"]');
-  }
-
-  async getInvalidEmailError() {
-    return await this.getErrorMessage('//div/span[text()="Email should be @aexp.com"]');
-  }
-
-  async getInvalidIIQGroupError() {
-    return await this.getErrorMessage('//div/span[text()="Group ID not found in IIQ."]');
-  }
-
-  async getValueCannotBeEmptyError() {
-    return await this.getErrorMessage('//span[text()="The value cannot be empty."]');
-  }
-
-  async expectConsumerHeaderToBeVisible() {
-    await expect(this.locators.consumerHeader).toBeVisible();
-    await expect(this.locators.consumerHeader).toContainText("Consumer Dashboard");
-  }
-
-  async getRegistrationParagraphText(selectors) {
-    return await Promise.all(selectors.map(selector => selector.innerText()));
-  }
-
-
-}
-
-export default ConsumerRegistionPage;
------------------------------------------
-consumerPageTest.spec.js
-import { test, expect } from "@playwright/test";
-import consumerFromData from "../../data/consumerFromData.json";
-import HomePage from "../../pages/commonPage/homePage.js";
-import ConsumerRegistionPage from "../../pages/consumerPage/consumerPage.js";
-import { CONSUMER_RESGISTRATION_URL } from "../../data/Constant/constent.js";
-
-test.describe("Consumer Details and Registration Page Validation", () => {
-  let page;
-  let homePage;
-  let consumerRegistionPage;
-
-  test.beforeEach(async ({ browser }) => {
-    page = await browser.newPage();
-    await page.goto("https://hyperdrive-qa.aexp.com/");
-    homePage = new HomePage(page);
-    await homePage.login("nthodeti", "Hyperdrive@UI@5814");
-    await page.waitForLoadState("domcontentloaded");
-  });
-  
-  // const navigateToConsumerRegistration = async () => {
-  //   await homePage.profile();
-  //   await homePage.selectConsumer();
-  //   await homePage.addnewRegistration();
-  //   consumerRegistionPage = new ConsumerRegistionPage(page);
-  // };
-
-  // producerFromData.forEach(({ description, data, expected }) => {
-  //   test(description, async () => {
-  //     let x = Math.floor(Math.random() * 1000 + 1);
-  //     const homePage = new HomePage(page);
-  //     await homePage.profile();
-  //     await homePage.selectProducer();
-  //     await homePage.addnewRegistration();
-  //     const producerRegistionPage = new ProducerRegistionPage(page);
-  //     await producerRegistionPage.registernewProducer(
-  //       data.name + x,
-  //       data.discription,
-  //       data.carId,
-  //       data.readWriteGroup,
-  //       data.emailDlAddress
-  //     );
-  //     await page.waitForTimeout(2000);
-  //     switch (expected.validationType) {
-  //       case "success":
-  //         await expect
-  //           .soft(page)
-  //           .toHaveURL(
-  //             "https://hyperdrive-dev.aexp.com/producer/dashboard/addparticipant"
-  //           );
-  //         break;
-  //       case "Name is too long":
-  //         console.log(
-  //           "Print the value of long producer name:",
-  //           await producerRegistionPage.getTxtlongProducer()
-  //         );
-  //         await expect
-  //           .soft(await producerRegistionPage.getTxtlongProducer())
-  //           .toContain("Name is too long");
-  //         break;
-  //       case "Description is too long":
-  //         await expect
-  //           .soft(await producerRegistionPage.getTxtlongDescription())
-  //           .toContain("Description is too long");
-  //         break;
-  //       case "Email should be @aexp.com":
-  //         await expect
-  //           .soft(await producerRegistionPage.getTxtInvalidEmail())
-  //           .toContain("Email should be @aexp.com");
-  //         break;
-  //       case "Invalid CAR ID":
-  //         await expect
-  //           .soft(await producerRegistionPage.getTxtInvalidCarID())
-  //           .toContain("Invalid CAR ID");
-  //         break;
-  //       case "Invalid IIQ Group":
-  //         await expect
-  //           .soft(await producerRegistionPage.getTxtInvalidReadWrite())
-  //           .toContain("Invalid IIQ Group");
-  //         break;
-  //       case "Value cannot be empty":
-  //         await expect
-  //           .soft(await producerRegistionPage.getTxtValuecannotBeEmpty())
-  //           .toContain("Value cannot be empty");
-  //         break;
-  //       default:
-  //         throw new Error(
-  //           `Unhandled validation type: ${expected.validationType}`
-  //         );
-  //     }
-  //   });
-  // });
-
-  consumerFromData.forEach(({ description, data, expected }) => {
-    test(description, async () => {
-      const randomSuffix = Math.floor(Math.random() * 1000 + 1);
-      const homePage = new HomePage(page);
-      //await homePage.selectaddparticipant();
-      await homePage.profile();
-      await homePage.selectConsumer();
-      await homePage.addnewRegistration();
-     // await page.waitForTimeout(2000);
-      const consumerRegistionPage = new ConsumerRegistionPage(page);
-     // await navigateToConsumerRegistration();
-      
-      // Registering a new consumer
-      await consumerRegistionPage.registerNewConsumer(
-        `${data.name}${randomSuffix}`,
-        data.name,
-        data.description,
-        data.readWriteGroup,
-        data.emailDlAddress
-      );
-
-      await page.waitForTimeout(2000);
-      await validateConsumerRegistration(expected.validationType);
-    });
-  });
-
-  const validateConsumerRegistration = async (validationType) => {
-    const validationMessages = {
-      success: async () => {
-        await expect.soft(page).toHaveURL("https://hyperdrive-qa.aexp.com/consumer/addparticipant");
-      },
-      "Name is too long": async () => {                                                   
-        await validateErrorMessage(await consumerRegistionPage.getLongConsumerNameError(), "Name is too long");
-      },
-      "Description is too long": async () => {
-        await validateErrorMessage(await consumerRegistionPage.getLongDescriptionError(), "Description is too long");
-      },
-      "Email should be @aexp.com": async () => {
-        await validateErrorMessage(await consumerRegistionPage.getInvalidEmailError(), "Email should be @aexp.com");
-      },
-      "Invalid IIQ Group": async () => {
-        await validateErrorMessage(await consumerRegistionPage.getInvalidIIQGroupError(), "Group ID not found in IIQ.");
-      },
-      "Group ID not found in IIQ": async () => {
-        await validateErrorMessage(await consumerRegistionPage.getInvalidIIQGroupError(), "Group ID not found in IIQ.");
-      },
-      "Value cannot be empty": async () => {
-        await validateErrorMessage(await consumerRegistionPage.getValueCannotBeEmptyError(), "The value cannot be empty.");
-      },
-    };
-
-    if (validationMessages[validationType]) {
-      await validationMessages[validationType]();
-    } else {
-      throw new Error(`Unhandled validation type: ${validationType}`);
+  },
+  {
+    "description": "Test consumer registration with empty name and description",
+    "data": {
+      "name": "",
+      "description": "",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "Value cannot be empty"
     }
-  };
-
-  const validateErrorMessage = async (actualMessage, expectedMessage) => {
-    console.log("Actual message:", actualMessage);
-    await expect.soft(actualMessage).toContain(expectedMessage);
-  };
-
-  test("Verify user action menu", async () => {
-    await homePage.profile();
-    await homePage.userActionMenuButtonVisiable();
-  });
-
-  test("Verified background color of Name ", async () => {
-    await navigateToConsumerRegistration();
-    await consumerRegistionPage.locators.consumerName.fill("Test0009");
-    await consumerRegistionPage.locators.nameValidateBtn.click();
-    await consumerRegistionPage.locators.Name_Color.click();
-    const element = await consumerRegistionPage.locators.Name_Color;
-    await homePage.backGroundColor(element);
-  });
-
-  test.afterEach(async () => {
-    await homePage.quit();
-  });
-  
-
-});
-
-
-
+  }
+]
