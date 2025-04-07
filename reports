@@ -1,425 +1,123 @@
-const puppeteer = require('puppeteer'); // v23.0.0 or later
 
-(async () => {
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    const timeout = 5000;
-    page.setDefaultTimeout(timeout);
+import { expect } from "@playwright/test";
 
-    {
-        const targetPage = page;
-        await targetPage.setViewport({
-            width: 865,
-            height: 867
-        })
-    }
-    {
-        const targetPage = page;
-        await targetPage.goto('https://hyperdrive-qa.aexp.com/consumer/557');
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator('div.pad-3-r h1'),
-            targetPage.locator('::-p-xpath(//*[@id=\\"user-profile-container\\"]/div/h1)')
-        ])
-            .setTimeout(timeout)
-            .click({
-              offset: {
-                x: 19.0625,
-                y: 15,
-              },
-            });
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator('#user-role'),
-            targetPage.locator('::-p-xpath(//*[@id=\\"user-role\\"])')
-        ])
-            .setTimeout(timeout)
-            .click({
-              offset: {
-                x: 117,
-                y: 15,
-              },
-            });
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator('#participants'),
-            targetPage.locator('::-p-xpath(//*[@id=\\"participants\\"])')
-        ])
-            .setTimeout(timeout)
-            .click({
-              offset: {
-                x: 95,
-                y: 30,
-              },
-            });
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator('#participants'),
-            targetPage.locator('::-p-xpath(//*[@id=\\"participants\\"])')
-        ])
-            .setTimeout(timeout)
-            .fill('');
-    }
-    {
-        const targetPage = page;
-        await waitForElement({
-            type: 'waitForElement',
-            selectors: [
-                '.cls'
-            ],
-            visible: true
-        }, targetPage, timeout);
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator('h1.css-14vxzxz'),
-            targetPage.locator('::-p-xpath(//*[@id=\\"root\\"]/div/div/div[2]/div/div/div/div/h1[1])')
-        ])
-            .setTimeout(timeout)
-            .click({
-              delay: 497.5,
-              offset: {
-                x: 355,
-                y: 4,
-              },
-            });
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator('#name'),
-            targetPage.locator('::-p-xpath(//*[@id=\\"name\\"])')
-        ])
-            .setTimeout(timeout)
-            .click({
-              offset: {
-                x: 238,
-                y: 14,
-              },
-            });
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator('#name'),
-            targetPage.locator('::-p-xpath(//*[@id=\\"name\\"])')
-        ])
-            .setTimeout(timeout)
-            .fill('N');
-    }
-    {
-        const targetPage = page;
-        await targetPage.keyboard.up('n');
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator('#name'),
-            targetPage.locator('::-p-xpath(//*[@id=\\"name\\"])')
-        ])
-            .setTimeout(timeout)
-            .fill('NarenA');
-    }
-    {
-        const targetPage = page;
-        await targetPage.keyboard.up('a');
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator('#name'),
-            targetPage.locator('::-p-xpath(//*[@id=\\"name\\"])')
-        ])
-            .setTimeout(timeout)
-            .fill('NarenApril4');
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator("[data-testid='section1'] button"),
-            targetPage.locator('::-p-xpath(//*[@data-testid=\\"section1\\"]/div[1]/div/div[1]/div/button)')
-        ])
-            .setTimeout(timeout)
-            .click({
-              offset: {
-                x: 9.984375,
-                y: 14,
-              },
-            });
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator('#description'),
-            targetPage.locator('::-p-xpath(//*[@id=\\"description\\"])')
-        ])
-            .setTimeout(timeout)
-            .click({
-              offset: {
-                x: 90,
-                y: 38,
-              },
-            });
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator('#description'),
-            targetPage.locator('::-p-xpath(//*[@id=\\"description\\"])')
-        ])
-            .setTimeout(timeout)
-            .fill('conumer');
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator('#readWriteGroup'),
-            targetPage.locator('::-p-xpath(//*[@id=\\"readWriteGroup\\"])')
-        ])
-            .setTimeout(timeout)
-            .click({
-              offset: {
-                x: 272,
-                y: 34,
-              },
-            });
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator('#readWriteGroup'),
-            targetPage.locator('::-p-xpath(//*[@id=\\"readWriteGroup\\"])')
-        ])
-            .setTimeout(timeout)
-            .fill('asdfadsf');
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator("[data-testid='section2'] > div > div.margin-2-t button"),
-            targetPage.locator('::-p-xpath(//*[@data-testid=\\"section2\\"]/div/div[1]/div/div[2]/div/button)')
-        ])
-            .setTimeout(timeout)
-            .click({
-              offset: {
-                x: 38.984375,
-                y: 24,
-              },
-            });
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator('#emailDlAddress'),
-            targetPage.locator('::-p-xpath(//*[@id=\\"emailDlAddress\\"])')
-        ])
-            .setTimeout(timeout)
-            .click({
-              offset: {
-                x: 107,
-                y: 10,
-              },
-            });
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator('#emailDlAddress'),
-            targetPage.locator('::-p-xpath(//*[@id=\\"emailDlAddress\\"])')
-        ])
-            .setTimeout(timeout)
-            .fill('adfasdf');
-    }
-    {
-        const targetPage = page;
-        await puppeteer.Locator.race([
-            targetPage.locator('button.css-1e6lvpm'),
-            targetPage.locator('::-p-xpath(//*[@data-testid=\\"form\\"]/div[4]/button[1])')
-        ])
-            .setTimeout(timeout)
-            .click({
-              offset: {
-                x: 47,
-                y: 27,
-              },
-            });
-    }
-    {
-        const targetPage = page;
-        await targetPage.goto('https://hyperdrive-qa.aexp.com/consumer/557');
-    }
-    {
-        const targetPage = page;
-        await targetPage.keyboard.down('NumLock');
-    }
-    {
-        const targetPage = page;
-        await targetPage.keyboard.up('NumLock');
-    }
-    {
-        const targetPage = page;
-        await targetPage.keyboard.down('NumLock');
-    }
-    {
-        const targetPage = page;
-        await targetPage.keyboard.up('NumLock');
-    }
-    {
-        const targetPage = page;
-        await targetPage.keyboard.down('NumLock');
-    }
-    {
-        const targetPage = page;
-        await targetPage.keyboard.up('NumLock');
-    }
-    {
-        const targetPage = page;
-        await targetPage.keyboard.down('NumLock');
-    }
-    {
-        const targetPage = page;
-        await targetPage.keyboard.up('NumLock');
-    }
+class ConsumerRegistionPage {
+  constructor(page) {
+    this.page = page;
 
-    await browser.close();
+    // Locators
+    this.locators = {
+      consumerName: page.locator("#name"),
+      nameValidateBtn: page.locator("//input[@id='name']//following-sibling::button"),
+      Name_Color: page.locator("span[class='display-block css-ab09iz'] svg"),
+      readWriteGroup: page.locator("#readWriteGroup"),
+      readWriteGroupValidateBtn: page.locator("//input[@id='readWriteGroup']//following-sibling::button"),
+      description: page.locator("#description"),
+      emailDlAddress: page.locator("#emailDlAddress"),
+      cancelBtn: page.locator('[data-testid="cancelBtn"]'),
+      submitBtn: page.locator('[data-testid="submitBtn"]'),
+      longConsumerNameError: page.locator('//span[text()="Name is too long"]'),
+      longDescriptionError: page.locator('//span[text()="Description is too long"]'),
+      invalidIIQGroupError: page.locator('//div/span[text()="Group ID not found in IIQ."]'),
+      invalidEmailError: page.locator('//div/span[text()="Email should be @aexp.com"]'),
+      valueCannotBeEmptyError: page.locator('//span[text()="The value cannot be empty."]'),
+      consumerHeader: page.locator('//h4[normalize-space()="Consumer Dashboard"]'),
+      section3: page.locator('[data-testid="section3"]'),
+      validatebtn_Loc: page.locator('[aria-label="Validate"]'),
+//******************************************************************************* */
+      profileMenu: page.locator("#profile-menu"),
+      consumerOption: page.locator("text=Consumer"),
+      addNewRegistration: page.locator("text=Add New Registration"),
+      nameField: page.locator("#name"),
+      nameLabel: page.locator("label[for='name']"),
+      nameHelpText: page.locator("#name-helper-text"),
+      nameValidateBtn: page.locator("//input[@id='name']//following-sibling::button"),
+      descriptionField: page.locator("#description"),
+      descriptionLabel: page.locator("label[for='description']"),
+      readWriteGroupField: page.locator("#readWriteGroup"),
+      readWriteGroupLabel: page.locator("label[for='readWriteGroup']"),
+      emailField: page.locator("#emailDlAddress"),
+      emailLabel: page.locator("label[for='emailDlAddress']"),
+      submitButton: page.locator('[data-testid="submitBtn"]'),
+      cancelButton: page.locator('[data-testid="cancelBtn"]'),
+      nameCounter: page.locator("//span[normalize-space()='4']"),
+      validationIcon: page.locator("(//span[@class='display-block css-ab09iz'])[1]"),
+      errorMessage: page.locator(".error-message"),
+      successMessage: page.locator(".success-message"),
+      emptyField: page.locator('//span[text()="The value cannot be empty"]'),
+      nameTooLong: page.locator('//span[text()="Name is too long"]'),
+      invalidEmail: page.locator('//div/span[text()="Email should be @aexp.com"]'),
+      invalidGroup: page.locator('//div/span[text()="Group ID not found in IIQ"]')
 
-    async function waitForElement(step, frame, timeout) {
-      const {
-        count = 1,
-        operator = '>=',
-        visible = true,
-        properties,
-        attributes,
-      } = step;
-      const compFn = {
-        '==': (a, b) => a === b,
-        '>=': (a, b) => a >= b,
-        '<=': (a, b) => a <= b,
-      }[operator];
-      await waitForFunction(async () => {
-        const elements = await querySelectorsAll(step.selectors, frame);
-        let result = compFn(elements.length, count);
-        const elementsHandle = await frame.evaluateHandle((...elements) => {
-          return elements;
-        }, ...elements);
-        await Promise.all(elements.map((element) => element.dispose()));
-        if (result && (properties || attributes)) {
-          result = await elementsHandle.evaluate(
-            (elements, properties, attributes) => {
-              for (const element of elements) {
-                if (attributes) {
-                  for (const [name, value] of Object.entries(attributes)) {
-                    if (element.getAttribute(name) !== value) {
-                      return false;
-                    }
-                  }
-                }
-                if (properties) {
-                  if (!isDeepMatch(properties, element)) {
-                    return false;
-                  }
-                }
-              }
-              return true;
 
-              function isDeepMatch(a, b) {
-                if (a === b) {
-                  return true;
-                }
-                if ((a && !b) || (!a && b)) {
-                  return false;
-                }
-                if (!(a instanceof Object) || !(b instanceof Object)) {
-                  return false;
-                }
-                for (const [key, value] of Object.entries(a)) {
-                  if (!isDeepMatch(value, b[key])) {
-                    return false;
-                  }
-                }
-                return true;
-              }
-            },
-            properties,
-            attributes
-          );
-        }
-        await elementsHandle.dispose();
-        return result === visible;
-      }, timeout);
-    }
+    };
+  }
 
-    async function querySelectorsAll(selectors, frame) {
-      for (const selector of selectors) {
-        const result = await querySelectorAll(selector, frame);
-        if (result.length) {
-          return result;
-        }
-      }
-      return [];
-    }
+  async registerNewConsumer(name, description, readWriteGroup, emailDlAddress) {
+    await this.fillConsumerDetails(name, description, readWriteGroup, emailDlAddress);
+    await this.locators.section3.click();
+    await this.page.waitForTimeout(1000);
+  }
 
-    async function querySelectorAll(selector, frame) {
-      if (!Array.isArray(selector)) {
-        selector = [selector];
-      }
-      if (!selector.length) {
-        throw new Error('Empty selector provided to querySelectorAll');
-      }
-      let elements = [];
-      for (let i = 0; i < selector.length; i++) {
-        const part = selector[i];
-        if (i === 0) {
-          elements = await frame.$$(part);
-        } else {
-          const tmpElements = elements;
-          elements = [];
-          for (const el of tmpElements) {
-            elements.push(...(await el.$$(part)));
-          }
-        }
-        if (elements.length === 0) {
-          return [];
-        }
-        if (i < selector.length - 1) {
-          const tmpElements = [];
-          for (const el of elements) {
-            const newEl = (await el.evaluateHandle(el => el.shadowRoot ? el.shadowRoot : el)).asElement();
-            if (newEl) {
-              tmpElements.push(newEl);
-            }
-          }
-          elements = tmpElements;
-        }
-      }
-      return elements;
-    }
+  async fillConsumerDetails(name, description, readWriteGroup, emailDlAddress) {
+    await this.locators.consumerName.fill(name);
+    await this.locators.nameValidateBtn.click();
+    await this.locators.description.fill(description);
+    await this.page.waitForTimeout(1000);
+    await this.locators.readWriteGroup.fill(readWriteGroup);
+    await this.locators.readWriteGroupValidateBtn.click();
+    await this.page.waitForTimeout(1000);
+    await this.locators.emailDlAddress.fill(emailDlAddress);
+  }
 
-    async function waitForFunction(fn, timeout) {
-      let isActive = true;
-      const timeoutId = setTimeout(() => {
-        isActive = false;
-      }, timeout);
-      while (isActive) {
-        const result = await fn();
-        if (result) {
-          clearTimeout(timeoutId);
-          return;
-        }
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
-      throw new Error('Timed out');
-    }
-})().catch(err => {
-    console.error(err);
-    process.exit(1);
-});
+  async clickSubmit() {
+    await this.locators.submitBtn.click();
+  }
+
+  async clickCancel() {
+    await this.locators.cancelBtn.click();
+  }
+  async consumerName() {
+    await this.locators.consumerName.click();
+  }
+
+  async getErrorMessage(locator) {
+    await this.page.waitForSelector(locator);
+    return await this.page.locator(locator).innerText();
+  }
+
+  async getLongConsumerNameError() {
+    return await this.getErrorMessage('//span[text()="Name is too long"]');
+  }
+
+  async getLongDescriptionError() {
+    return await this.getErrorMessage('//span[text()="Description is too long"]');
+  }
+
+  async getInvalidEmailError() {
+    return await this.getErrorMessage('//div/span[text()="Email should be @aexp.com"]');
+  }
+
+  async getInvalidIIQGroupError() {
+    return await this.getErrorMessage('//div/span[text()="Group ID not found in IIQ."]');
+  }
+
+  async getValueCannotBeEmptyError() {
+    return await this.getErrorMessage('//span[text()="The value cannot be empty."]');
+  }
+
+  async expectConsumerHeaderToBeVisible() {
+    await expect(this.locators.consumerHeader).toBeVisible();
+    await expect(this.locators.consumerHeader).toContainText("Consumer Dashboard");
+  }
+
+  async getRegistrationParagraphText(selectors) {
+    return await Promise.all(selectors.map(selector => selector.innerText()));
+  }
+
+
+}
+
+export default ConsumerRegistionPage;
+
+
