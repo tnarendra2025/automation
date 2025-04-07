@@ -11,20 +11,117 @@ Error: browser.newPage: Browser needs to be launched with the global proxy. If a
     at C:\kiran\cep-test-automation\tests\consumerTestCase\consumerPageTest.spec.js:121:30
 TypeError: Cannot read properties of undefined (reading 'page')
 
-test.describe('Some Test Suite', () => {
-  let consumerPage;
-  let page;
+import { test, expect } from '@playwright/test';
+import { testCases } from '../../data/consumerTestData.js';
+import ConsumerPage from '../../pages/consumerPage/consumerPage.js';
 
-  test.beforeEach(async ({ browser }) => {
-    const context = await browser.newContext();
-    page = await context.newPage();
-    consumerPage = new ConsumerPage(page);
+// Configure proxy settings
+test.use({
+  launchOptions: {
+    proxy: {
+      server: 'http://per-context'
+    }
+  }
+});
+
+// Configure test suite to run tests in serial mode
+test.describe.configure({ mode: 'serial' });
+
+let consumerPage;
+let context;
+let page;
+
+// Initialize page before all tests
+test.beforeAll(async ({ browser }) => {
+  context = await browser.newContext({
+    proxy: {
+      server: 'http://your-actual-proxy-server:port' // Replace with actual proxy
+    }
+  });
+  page = await context.newPage();
+  consumerPage = new ConsumerPage(page);
+});
+
+// Authentication Test Suite
+test.describe('Authentication Tests', () => {
+  test.beforeEach(async () => {
+    await consumerPage.navigateTo('login');
   });
 
-  test.afterEach(async () => {
+  testCases.authentication.forEach(testCase => {
+    test(`[${testCase.id}] ${testCase.description}`, async () => {
+      await consumerPage.performTestSteps(testCase.steps);
+    });
+  });
+});
+
+// Navigation Test Suite
+test.describe('Navigation Tests', () => {
+  test.beforeEach(async () => {
+    // Ensure we're logged in for navigation tests
+    await consumerPage.navigateTo('login');
+    await consumerPage.login('valid');
+  });
+
+  testCases.navigation.forEach(testCase => {
+    test(`[${testCase.id}] ${testCase.description}`, async () => {
+      await consumerPage.performTestSteps(testCase.steps);
+    });
+  });
+});
+
+// Field Validation Test Suite
+test.describe('Field Validation Tests', () => {
+  test.beforeEach(async () => {
+    await consumerPage.navigateTo('login');
+    await consumerPage.login('valid');
+    await consumerPage.navigateTo('registration');
+  });
+
+  testCases.fieldValidation.forEach(testCase => {
+    test(`[${testCase.id}] ${testCase.description}`, async () => {
+      await consumerPage.performTestSteps(testCase.steps);
+    });
+  });
+});
+
+// Form Submission Test Suite
+test.describe('Form Submission Tests', () => {
+  test.beforeEach(async () => {
+    await consumerPage.navigateTo('login');
+    await consumerPage.login('valid');
+    await consumerPage.navigateTo('registration');
+  });
+
+  testCases.formSubmission.forEach(testCase => {
+    test(`[${testCase.id}] ${testCase.description}`, async () => {
+      await consumerPage.performTestSteps(testCase.steps);
+    });
+  });
+});
+
+// UI/UX Test Suite
+test.describe('UI/UX Tests', () => {
+  test.beforeEach(async () => {
+    await consumerPage.navigateTo('login');
+    await consumerPage.login('valid');
+    await consumerPage.navigateTo('registration');
+  });
+
+  testCases.uiValidation.forEach(testCase => {
+    test(`[${testCase.id}] ${testCase.description}`, async () => {
+      await consumerPage.performTestSteps(testCase.steps);
+    });
+  });
+});
+
+// Clean up after all tests
+test.afterAll(async () => {
+  if (page) {
     await page.close();
-  });
-
-  // ... tests ...
+  }
+  if (context) {
+    await context.close();
+  }
 });
 
