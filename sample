@@ -27,10 +27,11 @@ import ConsumerPage from '../../pages/consumerPage/consumerPage.js';
 test.describe.configure({ mode: 'serial' });
 
 let consumerPage;
+let page;
 
 // Initialize page before all tests
 test.beforeAll(async ({ browser }) => {
-  const page = await browser.newPage();
+  page = await browser.newPage();
   consumerPage = new ConsumerPage(page);
 });
 
@@ -109,5 +110,6 @@ test.describe('UI/UX Tests', () => {
 
 // Clean up after all tests
 test.afterAll(async () => {
-  await consumerPage.page.close();
+  await page.close();
 });
+
