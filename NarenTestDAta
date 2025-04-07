@@ -1,0 +1,76 @@
+// consumerFromData.json - Structured Form Input Data for Tests
+{
+  "validCases": [
+    { "name": "TestUser1", "description": "Basic valid case", "group": "group1", "email": "user1@aexp.com" },
+    { "name": "TestUser2", "description": "All fields correct", "group": "group2", "email": "user2@aexp.com" },
+    { "name": "UserAlpha", "description": "Alpha Test", "group": "alphaGroup", "email": "alpha@aexp.com" },
+    { "name": "BetaTest", "description": "Beta Desc", "group": "betaGroup", "email": "beta@aexp.com" },
+    { "name": "Charlie", "description": "Just a user", "group": "devTeam", "email": "charlie@aexp.com" },
+    { "name": "TestCaseX", "description": "X Description", "group": "qaGroup", "email": "testx@aexp.com" },
+    { "name": "DataFlow", "description": "Flow testing", "group": "pipeline", "email": "flow@aexp.com" },
+    { "name": "UIInput", "description": "UI validation", "group": "frontend", "email": "ui@aexp.com" },
+    { "name": "EdgeUI", "description": "UI edge valid", "group": "edgeGroup", "email": "edge@aexp.com" },
+    { "name": "FormUser", "description": "Form coverage", "group": "formGroup", "email": "form@aexp.com" },
+
+    { "name": "N", "description": "Minimum length name", "group": "minGroup", "email": "min@aexp.com" },
+    { "name": "NameWithExactlyMaxLengthAllowedCharacters12345678901234567890", "description": "Max length name", "group": "maxGroup", "email": "max@aexp.com" }
+  ],
+
+  "invalidCases": [
+    { "name": "", "description": "Missing name", "group": "group1", "email": "user1@aexp.com" },
+    { "name": "User", "description": "", "group": "group1", "email": "user1@aexp.com" },
+    { "name": "User", "description": "Missing group", "group": "", "email": "user1@aexp.com" },
+    { "name": "User", "description": "Missing email", "group": "group1", "email": "" },
+    { "name": "User", "description": "Invalid email format", "group": "group1", "email": "invalidemail" },
+    { "name": "User", "description": "Special chars in group", "group": "@@invalid@@", "email": "user@aexp.com" },
+    { "name": "A".repeat(300), "description": "Too long name", "group": "group1", "email": "longname@aexp.com" },
+    { "name": "NormalName", "description": "Too long desc".repeat(100), "group": "group1", "email": "normal@aexp.com" },
+    { "name": "User", "description": "Case sensitivity test", "group": "Group1", "email": "user@AEXP.com" },
+    { "name": "DuplicateUser", "description": "Duplicate entry", "group": "group1", "email": "user1@aexp.com" },
+
+    { "name": "<script>alert(1)</script>", "description": "JS Injection attempt", "group": "group1", "email": "test@aexp.com" },
+    { "name": "   ", "description": "Whitespace name", "group": "group1", "email": "space@aexp.com" },
+    { "name": "tab\tname", "description": "Tab char in name", "group": "group1", "email": "tab@aexp.com" },
+    { "name": "ValidName", "description": "Overflow desc", "group": "group1", "email": "over@aexp.com" },
+    { "name": "ValidName", "description": "", "group": "@@bad@@", "email": "valid@aexp.com" },
+    { "name": "ValidName", "description": "Valid", "group": "group1", "email": "test@wrongdomain.com" },
+    { "name": "Special!@#", "description": "Special characters in name", "group": "group1", "email": "spec@aexp.com" },
+    { "name": "123456", "description": "Only numbers", "group": "group1", "email": "123456@aexp.com" },
+    { "name": "CAPSLOCK", "description": "All caps name", "group": "GROUP1", "email": "caps@aexp.com" },
+    { "name": "mixedCASE", "description": "Mixed case", "group": "GroupOne", "email": "mix@aexp.com" },
+
+    { "name": "A", "description": "Below min length name", "group": "group1", "email": "short@aexp.com" },
+    { "name": "Valid", "description": "Below min length desc", "group": "group1", "email": "shortdesc@aexp.com" },
+    { "name": "ThisNameIsWayTooLongToBeAcceptedByTheUIBecauseItExceedsTheDefinedCharacterLimit", "description": "Too long", "group": "group1", "email": "toolong@aexp.com" }
+  ],
+
+  "edgeCases": [
+    { "name": "Test@123", "description": "Special char in name", "group": "group1", "email": "test123@aexp.com" },
+    { "name": "Test User", "description": "Space in name", "group": "group1", "email": "testuser@aexp.com" },
+    { "name": "01234", "description": "Numeric name", "group": "123group", "email": "01234@aexp.com" },
+    { "name": "   ", "description": "Whitespace only name", "group": "group1", "email": "space@aexp.com" },
+    { "name": "CaseCheck", "description": "Case Test", "group": "Group", "email": "case@AEXP.COM" },
+    { "name": "CAPSLOCK", "description": "All caps", "group": "GROUP", "email": "CAPS@AEXP.COM" },
+    { "name": "longdesc", "description": "A very long description text that exceeds normal UI rendering boundaries to test overflow behavior.", "group": "longdescGroup", "email": "longdesc@aexp.com" },
+    { "name": "email+alias", "description": "Alias Email", "group": "group1", "email": "name+alias@aexp.com" },
+    { "name": "emoji😀", "description": "Emoji in name", "group": "emojiGroup", "email": "emoji@aexp.com" },
+    { "name": "tab\tname", "description": "Tab char", "group": "tabGroup", "email": "tab@aexp.com" }
+  ],
+
+  "uiLabels": {
+    "header": "Register New Consumer",
+    "consumerName": "Consumer Name",
+    "consumerDescription": "Consumer Description",
+    "readWriteGroup": "Read/Write Group",
+    "readOnlyGroup": "Read Only Group (Optional)",
+    "email": "Email Distribution Address"
+  },
+
+  "uiParagraphs": {
+    "topInstructions": "Please provide your consumer details below. For additional help or more information, please visit the Hyperdrive documentation.",
+    "nameInfo": "Make your name as descriptive as possible so you can easily identify the use case in the future. This name must be unique to your consumer registration.",
+    "registrationIntro": "In order to register a new consumer, you must first tell us which IIQ groups this consumer belongs to. IIQ groups determine Hyperdrive's access control. Users must be members of the associated group in order to have the properly aligned access for that group. If you have questions about the IIQ process, please see the IIQ documentation.",
+    "readWriteGroupInfo": "This group has read/write access to configurations and other artifacts that control processing, e.g. use cases, workflows, etc. You need to be a member of the group and not just a custodian.",
+    "readOnlyGroupInfo": "This group has read only access to configurations and other artifacts that control processing, e.g. use cases, workflows, etc."
+  }
+}
