@@ -74,3 +74,163 @@
     "readOnlyGroupInfo": "This group has read only access to configurations and other artifacts that control processing, e.g. use cases, workflows, etc."
   }
 }
+
+
+=================================================
+
+[
+  {
+    "description": "Test valid consumer registration",
+    "data": {
+      "name": "ValidConsumer",
+      "description": "A valid consumer description",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "success"
+    }
+  },
+
+  {
+    "description": "Test consumer registration with long name",
+    "data": {
+      "name": "ThisIsAVeryLongConsumerNameExceedingTheLimit",
+      "description": "Description is fine",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "Name is too long"
+    }
+  },
+  {
+    "description": "Test consumer registration with empty description",
+    "data": {
+      "name": "ValidConsumer",
+      "description": "",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "Value cannot be empty"
+    }
+  },
+  
+  {
+    "description": "Test consumer registration with empty email",
+    "data": {
+      "name": "ValidConsumer",
+      "description": "A valid description",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": ""
+    },
+    "expected": {
+      "validationType": "Value cannot be empty"
+    }
+  },
+  {
+    "description": "Test consumer registration with invalid IIQ group",
+    "data": {
+      "name": "ValidConsumer",
+      "description": "A valid description",
+      "readWriteGroup": "invalidIIQGroup",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "Invalid IIQ Group"
+    }
+  },
+  {
+    "description": "Test consumer registration with name containing special characters",
+    "data": {
+      "name": "Consumer@#123",
+      "description": "A valid description",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "success"
+    }
+  },
+  {
+    "description": "Test consumer registration with numeric name",
+    "data": {
+      "name": "12345",
+      "description": "Numeric name test",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "success"
+    }
+  },
+  {
+    "description": "Test consumer registration with valid @aexp.com email",
+    "data": {
+      "name": "ValidConsumer",
+      "description": "Valid description",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "success"
+    }
+  },
+  {
+    "description": "Test consumer registration with uppercase name",
+    "data": {
+      "name": "VALIDCONSUMER",
+      "description": "Uppercase name",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "success"
+    }
+  },
+  {
+    "description": "Test consumer registration with lowercase name",
+    "data": {
+      "name": "validconsumer",
+      "description": "Lowercase name",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "success"
+    }
+  },
+  {
+    "description": "Test consumer registration with mixed case name",
+    "data": {
+      "name": "ValiDConsuMer",
+      "description": "Mixed case name",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "success"
+    }
+  },
+  {
+    "description": "Test consumer registration with empty name and description",
+    "data": {
+      "name": "",
+      "description": "",
+      "readWriteGroup": "GG-HYPERDRIVE-FEATURE-TESTER",
+      "emailDlAddress": "NARENDRA.B.THODETI@AESP.COM"
+    },
+    "expected": {
+      "validationType": "Value cannot be empty"
+    }
+
+
+    
+
+  }
+
+ 
+
+]
+
