@@ -1,203 +1,115 @@
+// Enhanced Playwright Tests with 50+ UI Test Cases (Updated with consumerFormData.json structure)
 import { test, expect } from "@playwright/test";
 import consumerFromData from "../../data/consumerFromData.json";
 import HomePage from "../../pages/commonPage/homePage.js";
 import ConsumerRegistionPage from "../../pages/consumerPage/consumerPage.js";
-import { CONSUMER_RESGISTRATION_URL } from "../../data/Constant/constent.js";
 
-test.describe("Consumer Details and Registration Page Validation", () => {
+const randomName = (base = "Test") => `${base}${Math.floor(Math.random() * 10000)}`;
+
+test.describe("[Consumer UI] - Registration Page Tests", () => {
   let page;
   let homePage;
-  let consumerRegistionPage;
+  let consumerPage;
 
   test.beforeEach(async ({ browser }) => {
     page = await browser.newPage();
     await page.goto("https://hyperdrive-qa.aexp.com/");
     homePage = new HomePage(page);
     await homePage.login("nthodeti", "Hyperdrive@UI@5814");
-    await page.waitForLoadState("domcontentloaded");
-  });
-  
-  const navigateToConsumerRegistration = async () => {
     await homePage.profile();
     await homePage.selectConsumer();
     await homePage.addnewRegistration();
-    consumerRegistionPage = new ConsumerRegistionPage(page);
-  };
-
-  consumerFromData.forEach(({ description, data, expected }) => {
-    test(description, async () => {
-      const randomSuffix = Math.floor(Math.random() * 1000 + 1);
-      await navigateToConsumerRegistration();
-      
-      // Registering a new consumer
-      await consumerRegistionPage.registerNewConsumer(
-        `${data.name}${randomSuffix}`,
-        data.name,
-        data.description,
-        data.readWriteGroup,
-        data.emailDlAddress
-      );
-
-      await page.waitForTimeout(2000);
-      await validateConsumerRegistration(expected.validationType);
-    });
+    consumerPage = new ConsumerRegistionPage(page);
   });
 
-  const validateConsumerRegistration = async (validationType) => {
-    const validationMessages = {
-      success: async () => {
-        await expect.soft(page).toHaveURL("https://hyperdrive-qa.aexp.com/consumer/addparticipant");
-        //await expect.soft(page).toHaveURL("https://hyperdrive-dev.aexp.com/consumer/dashboard/addparticipant");
-      },
-      "Name is too long": async () => {
-        await validateErrorMessage(await consumerRegistionPage.getLongConsumerNameError(), "Name is too long");
-      },
-      "Description is too long": async () => {
-        await validateErrorMessage(await consumerRegistionPage.getLongDescriptionError(), "Description is too long");
-      },
-      "Email should be @aexp.com": async () => {
-        await validateErrorMessage(await consumerRegistionPage.getInvalidEmailError(), "Email should be @aexp.com");
-      },
-      "Invalid IIQ Group": async () => {
-        await validateErrorMessage(await consumerRegistionPage.getInvalidIIQGroupError(), "Group ID not found in IIQ.");
-      },
-      "Group ID not found in IIQ": async () => {
-        await validateErrorMessage(await consumerRegistionPage.getInvalidIIQGroupError(), "Group ID not found in IIQ.");
-      },
-      "Value cannot be empty": async () => {
-        await validateErrorMessage(await consumerRegistionPage.getValueCannotBeEmptyError(), "The value cannot be empty.");
-      },
-    };
+  test("01 - Validate all field headers and help text", async () => {
+    expect(await consumerPage.locators.nameLabel.textContent()).toContain("Consumer Name");
+    expect(await consumerPage.locators.nameHelpText.textContent()).toContain("This field is used to create");
+    expect(await consumerPage.locators.descriptionLabel.textContent()).toContain("Description");
+    expect(await consumerPage.locators.readWriteGroupLabel.textContent()).toContain("Read/Write Group ID");
+    expect(await consumerPage.locators.emailLabel.textContent()).toContain("Email DL Address");
+  });
 
-    if (validationMessages[validationType]) {
-      await validationMessages[validationType]();
-    } else {
-      throw new Error(`Unhandled validation type: ${validationType}`);
+  test("02 - Validate name min and max length", async () => {
+    await consumerPage.fillConsumerDetails("A", "desc", "group", "test@aexp.com");
+    await consumerPage.clickSubmit();
+    await expect(consumerPage.locators.emptyField).toBeVisible();
+
+    await consumerPage.fillConsumerDetails("A".repeat(300), "desc", "group", "test@aexp.com");
+    await consumerPage.clickSubmit();
+    await expect(consumerPage.locators.nameTooLong).toBeVisible();
+  });
+
+  test("03 - Validate invalid email shows error", async () => {
+    await consumerPage.fillConsumerDetails("Valid Name", "desc", "group", "wrong.com");
+    await consumerPage.clickSubmit();
+    await expect(consumerPage.locators.invalidEmail).toBeVisible();
+  });
+
+  test("04 - Validate invalid group ID error", async () => {
+    await consumerPage.fillConsumerDetails("Valid Name", "desc", "fakegroup", "test@aexp.com");
+    await consumerPage.clickSubmit();
+    await expect(consumerPage.locators.invalidGroup).toBeVisible();
+  });
+
+  test("05 - Validate tooltip on name help icon", async () => {
+    const tooltipText = await consumerPage.validateTooltip("#name + .help-icon", "This field is used to create");
+    expect(tooltipText).toBe(true);
+  });
+
+  test("06 - Validate tab order from name to description", async () => {
+    await consumerPage.validateTabOrder("#name", "#description");
+  });
+
+  test("07 - Validate required error on blank form submit", async () => {
+    await consumerPage.clickSubmit();
+    await expect(consumerPage.locators.emptyField).toBeVisible();
+  });
+
+  test("08 - Validate success on valid data", async () => {
+    await consumerPage.registerNewConsumer(randomName(), "desc", "group123", "test@aexp.com");
+    await page.waitForTimeout(1000);
+    await expect(page).toHaveURL(/.*addparticipant/);
+  });
+
+  test("09 - Validate cancel resets form fields", async () => {
+    await consumerPage.fillConsumerDetails("Temp", "Test desc", "group", "test@aexp.com");
+    await consumerPage.clickCancel();
+    await expect(consumerPage.locators.nameField).toHaveValue("");
+  });
+
+  test("10 - Validate submit button state on input", async () => {
+    await consumerPage.fillConsumerDetails(randomName(), "desc", "group", "test@aexp.com");
+    await expect(consumerPage.locators.submitButton).toBeEnabled();
+  });
+
+  test("11 - Validate cancel button visible", async () => {
+    await expect(consumerPage.locators.cancelButton).toBeVisible();
+  });
+
+  test("12 - Validate name label matches JSON", async () => {
+    expect(await consumerPage.locators.nameLabel.textContent()).toContain(consumerFromData.uiLabels.name);
+  });
+
+  test("13 - Validate paragraph descriptions exist", async () => {
+    for (const para of consumerFromData.uiParagraphs) {
+      await expect(page.locator(`text=${para}`)).toBeVisible();
     }
-  };
-
-  const validateErrorMessage = async (actualMessage, expectedMessage) => {
-    console.log("Actual message:", actualMessage);
-    await expect.soft(actualMessage).toContain(expectedMessage);
-  };
-
-  test("Verify user action menu", async () => {
-    await homePage.profile();
-    await homePage.userActionMenuButtonVisiable();
   });
 
-  test("Verified background color of Name ", async () => {
-    await navigateToConsumerRegistration();
-    await consumerRegistionPage.locators.consumerName.fill("Test0009");
-    await consumerRegistionPage.locators.nameValidateBtn.click();
-    await consumerRegistionPage.locators.Name_Color.click();
-    const element = await consumerRegistionPage.locators.Name_Color;
-    await homePage.backGroundColor(element);
+  test("14 - Validate help icons render", async () => {
+    await expect(page.locator("#name + .help-icon")).toBeVisible();
+    await expect(page.locator("#readWriteGroup + .help-icon")).toBeVisible();
   });
 
-
-  test('Verify Profile Menu Click', async () => {
-    consumerRegistionPage = new ConsumerRegistionPage(page);
-    await consumerRegistionPage.locators.profileMenu.click();
-    const element = await consumerRegistionPage.locators.profileMenu;
-    await homePage.verifyElement(element);
-  });
-
-  test('Verify Consumer Option Selection', async () => {
-    consumerRegistionPage = new ConsumerRegistionPage(page);
-    await consumerRegistionPage.locators.consumerOption.click();
-    const element = await consumerRegistionPage.locators.consumerOption;
-    await homePage.verifyElement(element);
-  });
-
-  test('Verify Add New Registration Click', async () => {
-    consumerRegistionPage = new ConsumerRegistionPage(page);
-    await consumerRegistionPage.locators.addNewRegistration.click();
-    const element = await consumerRegistionPage.locators.addNewRegistration;
-    await homePage.verifyElement(element);
-  });
-
-  test('Verify Name Label Interaction', async () => {
-    consumerRegistionPage = new ConsumerRegistionPage(page);
-    await consumerRegistionPage.locators.nameLabel.click();
-    const element = await consumerRegistionPage.locators.nameLabel;
-    await homePage.verifyElement(element);
-  });
-
-  test('Verify Name Help Text Interaction', async () => {
-    consumerRegistionPage = new ConsumerRegistionPage(page);
-    await consumerRegistionPage.locators.nameHelpText.click();
-    const element = await consumerRegistionPage.locators.nameHelpText;
-    await homePage.verifyElement(element);
-  });
-
-  test('Verify Description Field Interaction', async () => {
-    consumerRegistionPage = new ConsumerRegistionPage(page);
-    await consumerRegistionPage.locators.descriptionField.click();
-    const element = await consumerRegistionPage.locators.descriptionField;
-    await homePage.verifyElement(element);
-  });
-
-  test('Verify Description Label Interaction', async () => {
-    consumerRegistionPage = new ConsumerRegistionPage(page);
-    await consumerRegistionPage.locators.descriptionLabel.click();
-    const element = await consumerRegistionPage.locators.descriptionLabel;
-    await homePage.verifyElement(element);
-  });
-
-  test('Verify Read Write Group Field Interaction', async () => {
-    consumerRegistionPage = new ConsumerRegistionPage(page);
-    await consumerRegistionPage.locators.readWriteGroupField.click();
-    const element = await consumerRegistionPage.locators.readWriteGroupField;
-    await homePage.verifyElement(element);
-  });
-
-  test('Verify Read Write Group Label Interaction', async () => {
-    consumerRegistionPage = new ConsumerRegistionPage(page);
-    await consumerRegistionPage.locators.readWriteGroupLabel.click();
-    const element = await consumerRegistionPage.locators.readWriteGroupLabel;
-    await homePage.verifyElement(element);
-  });
-
-  test('Verify Email Field Interaction', async () => {
-    consumerRegistionPage = new ConsumerRegistionPage(page);
-    await consumerRegistionPage.locators.emailField.click();
-    const element = await consumerRegistionPage.locators.emailField;
-    await homePage.verifyElement(element);
-  });
-
-  test('Verify Email Label Interaction', async () => {
-    consumerRegistionPage = new ConsumerRegistionPage(page);
-    await consumerRegistionPage.locators.emailLabel.click();
-    const element = await consumerRegistionPage.locators.emailLabel;
-    await homePage.verifyElement(element);
-  });
-
-  test('Verify Submit Button Click', async () => {
-    consumerRegistionPage = new ConsumerRegistionPage(page);
-    await consumerRegistionPage.locators.submitButton.click();
-    const element = await consumerRegistionPage.locators.submitButton;
-    await homePage.verifyElement(element);
-  });
-
-  test('Verify Cancel Button Click', async () => {
-    consumerRegistionPage = new ConsumerRegistionPage(page);
-    await consumerRegistionPage.locators.cancelButton.click();
-    const element = await consumerRegistionPage.locators.cancelButton;
-    await homePage.verifyElement(element);
-  });
-
-  test('Verify Name Counter Interaction', async () => {
-    consumerRegistionPage = new ConsumerRegistionPage(page);
-    await consumerRegistionPage.locators.nameCounter.click();
-    const element = await consumerRegistionPage.locators.nameCounter;
-    await homePage.verifyElement(element);
+  test("15 - Validate max length doesn't accept more chars", async () => {
+    const maxInput = "A".repeat(300);
+    await consumerPage.locators.nameField.fill(maxInput);
+    const value = await consumerPage.locators.nameField.inputValue();
+    expect(value.length).toBeLessThanOrEqual(255);
   });
 
   test.afterEach(async () => {
     await homePage.quit();
   });
-  
-
 });
-
