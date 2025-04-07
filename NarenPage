@@ -1,0 +1,85 @@
+// consumerPage.js - Enhanced Page Object Model (Updated with consumerFromData.json structure)
+
+export default class ConsumerRegistionPage {
+  constructor(page) {
+    this.page = page;
+    this.locators = {
+      profileMenu: page.locator("#profile-menu"),
+      consumerOption: page.locator("text=Consumer"),
+      addNewRegistration: page.locator("text=Add New Registration"),
+
+      nameField: page.locator("#name"),
+      nameLabel: page.locator("label[for='name']"),
+      nameHelpText: page.locator("#name-helper-text"),
+      nameValidateBtn: page.locator("//input[@id='name']//following-sibling::button"),
+
+      descriptionField: page.locator("#description"),
+      descriptionLabel: page.locator("label[for='description']"),
+
+      readWriteGroupField: page.locator("#readWriteGroup"),
+      readWriteGroupLabel: page.locator("label[for='readWriteGroup']"),
+
+      emailField: page.locator("#emailDlAddress"),
+      emailLabel: page.locator("label[for='emailDlAddress']"),
+
+      submitButton: page.locator('[data-testid="submitBtn"]'),
+      cancelButton: page.locator('[data-testid="cancelBtn"]'),
+
+      nameCounter: page.locator("//span[normalize-space()='4']"),
+      validationIcon: page.locator("(//span[@class='display-block css-ab09iz'])[1]"),
+
+      // Error messages
+      errorMessage: page.locator(".error-message"),
+      successMessage: page.locator(".success-message"),
+
+      emptyField: page.locator("//span[text()='The value cannot be empty']"),
+      nameTooLong: page.locator("//span[text()='Name is too long']"),
+      invalidEmail: page.locator("//div/span[text()='Email should be @aexp.com']"),
+      invalidGroup: page.locator("//div/span[text()='Group ID not found in IIQ']")
+    };
+  }
+
+  async navigateToConsumerForm() {
+    await this.locators.profileMenu.click();
+    await this.locators.consumerOption.click();
+    await this.locators.addNewRegistration.click();
+  }
+
+  async fillConsumerDetails(name, description, group, email) {
+    await this.locators.nameField.fill(name);
+    await this.locators.descriptionField.fill(description);
+    await this.locators.readWriteGroupField.fill(group);
+    await this.locators.emailField.fill(email);
+  }
+
+  async clickSubmit() {
+    await this.locators.submitButton.click();
+  }
+
+  async clickCancel() {
+    await this.locators.cancelButton.click();
+  }
+
+  async registerNewConsumer(name, description, group, email) {
+    await this.fillConsumerDetails(name, description, group, email);
+    await this.clickSubmit();
+  }
+
+  async clearAllFields() {
+    await this.locators.nameField.fill("");
+    await this.locators.descriptionField.fill("");
+    await this.locators.readWriteGroupField.fill("");
+    await this.locators.emailField.fill("");
+  }
+
+  async validateTooltip(locator, expectedText) {
+    await this.page.hover(locator);
+    const tooltipText = await this.page.locator(".tooltip-content").innerText();
+    return tooltipText.includes(expectedText);
+  }
+
+  async validateTabOrder(firstField, expectedNext) {
+    await this.page.locator(firstField).press("Tab");
+    await expect(this.page.locator(expectedNext)).toBeFocused();
+  }
+}
