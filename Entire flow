@@ -1069,5 +1069,150 @@ test.describe("Consumer Details and Registration Page Validation", () => {
     await homePage.quit();
   });
 });
+kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+// @ts-check
+const { test, expect } = require('@playwright/test');
+
+test.describe('Consumer Registration Form UI Tests', () => {
+  let locators;
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto('https://your-app-url.com'); // Replace with actual URL
+    await page.click('#profile-menu');
+    await page.click('text=Consumer');
+    await page.click('text=Add New Registration');
+
+    locators = {
+      name: page.locator('#name'),
+      nameValidateBtn: page.locator("//input[@id='name']//following-sibling::button"),
+      nameValidationTick: page.locator("//input[@name='name'][@id='name']//following-sibling::button[@aria-label='Validate']/span"),
+      nameTooLongError: page.locator("//span[text()='Name is too long']"),
+      nameEmptyError: page.locator("//span[text()='The value cannot be empty.']"),
+
+      description: page.locator('#description'),
+      descriptionTooLongError: page.locator("//span[text()='Description is too long']"),
+
+      group: page.locator('#readWriteGroup'),
+      groupValidateBtn: page.locator("//input[@id='readWriteGroup']//following-sibling::button"),
+      groupValidationTick: page.locator("//input[@name='readWriteGroup'][@id='readWriteGroup']//following-sibling::button[@aria-label='Validate']/span"),
+      groupInvalidError: page.locator("//div/span[text()='Group ID not found in IIQ.']"),
+
+      email: page.locator('#emailDlAddress'),
+      emailInvalidError: page.locator("//div/span[text()='Email should be @aexp.com']"),
+
+      submit: page.locator('[data-testid="submitBtn"]'),
+      cancel: page.locator('[data-testid="cancelBtn"]'),
+      dashboardHeader: page.locator('//h4[normalize-space()="Consumer Dashboard"]'),
+    };
+  });
+
+  // ---------- NAME FIELD TESTS ----------
+  for (let i = 1; i <= 10; i++) {
+    test(`Name Field Test #${i}`, async ({ page }) => {
+      if (i === 1) {
+        await locators.name.click();
+        await page.keyboard.press('Tab');
+        await expect(locators.nameEmptyError).toBeVisible();
+      } else if (i === 2) {
+        await locators.name.fill('Valid Name');
+        await locators.nameValidateBtn.click();
+        await expect(locators.nameValidationTick).toBeVisible();
+      } else if (i === 3) {
+        await locators.name.fill('A'.repeat(101));
+        await locators.nameValidateBtn.click();
+        await expect(locators.nameTooLongError).toBeVisible();
+      } else {
+        await locators.name.fill(`Test Name ${i}`);
+        await locators.nameValidateBtn.click();
+        await expect(locators.name).toHaveValue(`Test Name ${i}`);
+      }
+    });
+  }
+
+  // ---------- DESCRIPTION FIELD TESTS ----------
+  for (let i = 1; i <= 10; i++) {
+    test(`Description Field Test #${i}`, async ({ page }) => {
+      if (i === 1) {
+        await locators.description.fill('This is a valid description.');
+        await expect(locators.description).toHaveValue('This is a valid description.');
+      } else if (i === 2) {
+        await locators.description.fill('');
+        await expect(locators.description).toHaveValue('');
+      } else if (i === 3) {
+        await locators.description.fill('D'.repeat(501));
+        await expect(locators.descriptionTooLongError).toBeVisible();
+      } else {
+        await locators.description.fill(`Description ${i}`);
+        await expect(locators.description).toHaveValue(`Description ${i}`);
+      }
+    });
+  }
+
+  // ---------- GROUP FIELD TESTS ----------
+  for (let i = 1; i <= 10; i++) {
+    test(`Group Field Test #${i}`, async ({ page }) => {
+      if (i === 1) {
+        await locators.group.fill('ValidGroup');
+        await locators.groupValidateBtn.click();
+        await expect(locators.groupValidationTick).toBeVisible();
+      } else if (i === 2) {
+        await locators.group.fill('FakeGroup123');
+        await locators.groupValidateBtn.click();
+        await expect(locators.groupInvalidError).toBeVisible();
+      } else if (i === 3) {
+        await locators.group.click();
+        await page.keyboard.press('Tab');
+        await expect(locators.nameEmptyError).toBeVisible();
+      } else {
+        await locators.group.fill(`Group${i}`);
+        await locators.groupValidateBtn.click();
+        await expect(locators.group).toHaveValue(`Group${i}`);
+      }
+    });
+  }
+
+  // ---------- EMAIL FIELD TESTS ----------
+  for (let i = 1; i <= 10; i++) {
+    test(`Email Field Test #${i}`, async ({ page }) => {
+      if (i === 1) {
+        await locators.email.fill('user@aexp.com');
+        await expect(locators.email).toHaveValue('user@aexp.com');
+      } else if (i === 2) {
+        await locators.email.fill('user@gmail.com');
+        await locators.submit.click();
+        await expect(locators.emailInvalidError).toBeVisible();
+      } else if (i === 3) {
+        await locators.email.click();
+        await page.keyboard.press('Tab');
+        await expect(locators.nameEmptyError).toBeVisible();
+      } else {
+        await locators.email.fill(`user${i}@aexp.com`);
+        await expect(locators.email).toHaveValue(`user${i}@aexp.com`);
+      }
+    });
+  }
+
+  // ---------- SUBMIT / CANCEL BUTTON TESTS ----------
+  for (let i = 1; i <= 10; i++) {
+    test(`Form Submission Test #${i}`, async ({ page }) => {
+      if (i === 1) {
+        await expect(locators.submit).toBeDisabled();
+      } else if (i === 2) {
+        await locators.name.fill('Valid Name');
+        await locators.group.fill('ValidGroup');
+        await locators.email.fill('user@aexp.com');
+        await expect(locators.submit).toBeEnabled();
+      } else if (i === 3) {
+        await locators.cancel.click();
+        await expect(locators.dashboardHeader).toBeVisible();
+      } else {
+        await locators.name.fill(`Valid Name ${i}`);
+        await locators.group.fill(`Group${i}`);
+        await locators.email.fill(`user${i}@aexp.com`);
+        await locators.submit.click();
+      }
+    });
+  }
+});
 
 
