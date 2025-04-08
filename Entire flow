@@ -778,3 +778,165 @@ test.describe("Consumer Details and Registration Page Validation", () => {
   });
 });
 
+TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+
+
+import { expect } from "@playwright/test";
+
+class ConsumerRegistionPage {
+  constructor(page) {
+    this.page = page;
+
+    // Locators
+    this.locators = {
+      consumerName: page.locator("#name"),
+      nameValidateBtn: page.locator("//input[@id='name']//following-sibling::button"),
+      nameValidationGreenTickMarkLocator : page.locator('//input[@name="name"][@id="name"]//following-sibling::button[@aria-label ="Validate"]/span'),
+      Name_Color: page.locator("span[class='display-block css-ab09iz'] svg"),
+      readWriteGroup: page.locator("#readWriteGroup"),
+      readWriteGroupValidateBtn: page.locator("//input[@id='readWriteGroup']//following-sibling::button"),
+      description: page.locator("#description"),
+      emailDlAddress: page.locator("#emailDlAddress"),
+      cancelBtn: page.locator('[data-testid="cancelBtn"]'),
+      submitBtn: page.locator('[data-testid="submitBtn"]'),
+      longConsumerNameError: page.locator('//span[text()="Name is too long"]'),
+      longDescriptionError: page.locator('//span[text()="Description is too long"]'),
+      invalidIIQGroupError: page.locator('//div/span[text()="Group ID not found in IIQ."]'),
+      invalidEmailError: page.locator('//div/span[text()="Email should be @aexp.com"]'),
+      valueCannotBeEmptyError: page.locator('//span[text()="The value cannot be empty."]'),
+      consumerHeader: page.locator('//h4[normalize-space()="Consumer Dashboard"]'),
+      section3: page.locator('[data-testid="section3"]'),
+      validatebtn_Loc: page.locator('[aria-label="Validate"]'),
+      nameValidateLocator: page.locator("//input[@id='name']//following-sibling::button"),
+      iiqGroupValidateLocator:page.locator("//input[@id='readWriteGroup']//following-sibling::button"),
+      registerButtonLocator : page.locator('//button[@data-testid="cancelBtn"]/following-sibling::button'),
+      iiqGroupLocator : page.locator("#readWriteGroup"),
+      submitBtnLocator :page.locator('[data-testid="submitBtn"]'),
+      validatebtn_Loc: page.locator('[aria-label="Validate"]'),
+      iiqGroupValidatetickmarkLocator : page.locator('//input[@name="readWriteGroup"][@id="readWriteGroup"]//following-sibling::button[@aria-label ="Validate"]/span'),
+      showHideDetailsButtonLocator : page.locator('//a[@role="button" and text()="Show Details"]'),
+      valueCannotBeEmpty_Loc : page.locator('xpath = //span[text()="Value cannot be empty"]'),
+      carIdValidateLocator : page.locator("//input[@id='carId']//following-sibling::button"),
+      carId_Color : page.locator("//input[@id='carId']/following-sibling::button/span"),
+      validatebtn_Loc: page.locator('[aria-label="Validate"]'),
+      validatebtn_Loc : page.locator('[aria-label="Validate"]'),
+      submitBtnLocator :page.locator('[data-testid="submitBtn"]'),
+
+//******************************************************************************* */
+      profileMenu: page.locator("#profile-menu"),
+      consumerOption: page.locator("text=Consumer"),
+      addNewRegistration: page.locator("text=Add New Registration"),
+      nameField: page.locator("#name"),
+      nameLabel: page.locator("label[for='name']"),
+      nameHelpText: page.locator("#name-helper-text"),
+      nameValidateBtn: page.locator("//input[@id='name']//following-sibling::button"),
+      descriptionField: page.locator("#description"),
+      descriptionLabel: page.locator("label[for='description']"),
+      readWriteGroupField: page.locator("#readWriteGroup"),
+      readWriteGroupLabel: page.locator("label[for='readWriteGroup']"),
+      emailField: page.locator("#emailDlAddress"),
+      emailLabel: page.locator("label[for='emailDlAddress']"),
+      submitButton: page.locator('[data-testid="submitBtn"]'),
+      cancelButton: page.locator('[data-testid="cancelBtn"]'),
+      nameCounter: page.locator("//span[normalize-space()='4']"),
+      validationIcon: page.locator("(//span[@class='display-block css-ab09iz'])[1]"),
+      errorMessage: page.locator(".error-message"),
+      successMessage: page.locator(".success-message"),
+      emptyField: page.locator('//span[text()="The value cannot be empty"]'),
+      nameTooLong: page.locator('//span[text()="Name is too long"]'),
+      invalidEmail: page.locator('//div/span[text()="Email should be @aexp.com"]'),
+      invalidGroup: page.locator('//div/span[text()="Group ID not found in IIQ"]')
+
+
+    };
+  }
+
+  
+  async registerNewConsumer(name, description, readWriteGroup, emailDlAddress) {
+    await this.fillConsumerDetails(name, description, readWriteGroup, emailDlAddress);
+    await this.locators.section3.click();
+    await this.page.waitForTimeout(1000);
+  }
+
+  async fillConsumerDetails(name, description, readWriteGroup, emailDlAddress) {
+    await this.locators.consumerName.fill(name);
+    await this.locators.nameValidateBtn.click();
+    await this.locators.description.fill(description);
+    await this.page.waitForTimeout(1000);
+    await this.locators.readWriteGroup.fill(readWriteGroup);
+    await this.locators.readWriteGroupValidateBtn.click();
+    await this.page.waitForTimeout(1000);
+    await this.locators.emailDlAddress.fill(emailDlAddress);
+  }
+
+  async clickSubmit() {
+    await this.locators.submitBtn.click();
+  }
+
+  async clickCancel() {
+    await this.locators.cancelBtn.click();
+  }
+  async consumerName() {
+    await this.locators.consumerName.click();
+  }
+
+  
+  async getErrorMessage(locator) {
+    await this.page.waitForSelector(locator);
+    return await this.page.locator(locator).innerText();
+  }
+
+  async getLongConsumerNameError() {
+    return await this.getErrorMessage('//span[text()="Name is too long"]');
+  }
+
+  async getLongDescriptionError() {
+    return await this.getErrorMessage('//span[text()="Description is too long"]');
+  }
+
+  async getInvalidEmailError() {
+    return await this.getErrorMessage('//div/span[text()="Email should be @aexp.com"]');
+  }
+
+  async getInvalidIIQGroupError() {
+    return await this.getErrorMessage('//div/span[text()="Group ID not found in IIQ."]');
+  }
+
+  async getValueCannotBeEmptyError() {
+    return await this.getErrorMessage('//span[text()="The value cannot be empty."]');
+  }
+
+  async expectConsumerHeaderToBeVisible() {
+    await expect(this.locators.consumerHeader).toBeVisible();
+    await expect(this.locators.consumerHeader).toContainText("Consumer Dashboard");
+  }
+
+  async getRegistrationParagraphText(selectors) {
+    return await Promise.all(selectors.map(selector => selector.innerText()));
+  }
+
+  async checkShowHideButtonFunctionality() {
+    await this.page.locator(this.showHideDetailsButtonLocator.click());
+    await expect(this.page.locator(this.showHideDetailsContentLocator1)).toBeVisible();
+    await expect(this.page.locator(this.showHideDetailsContentLocator2)).toBeVisible();
+    await expect(this.page.locator(this.showHideDetailsContentLocator3)).toBeVisible();
+    await expect(this.page.locator(this.showHideDetailsContentLocator4)).toBeVisible();
+    await expect(this.page.locator(this.showHideDetailsContentLocator5)).toBeVisible();
+  }
+
+    // Work done
+    async commonmethod() {        
+      if (MaxCharCount< inputChar) {
+        expect(await this.page.locator('//label[@for = "name"]/parent::div//span').nth(1)).toContainText("Name is too long");
+      }
+      else if (await MaxCharCount >= await inputChar) {
+        await this.page.waitForTimeout(2000);
+      }
+    }
+}
+
+export default ConsumerRegistionPage;
+
+
+
+
