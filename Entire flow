@@ -1365,4 +1365,143 @@ test.describe('Consumer Registration Form UI Tests', () => {
     }
   });
 });
+jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
+import { test, expect } from '@playwright/test';
 
+test.describe('Consumer Registration Page Tests', () => {
+  let page;
+
+  test.beforeEach(async ({ browser }) => {
+    page = await browser.newPage();
+    await page.goto('https://hyperdrive-qa.aexp.com/consumer/registration');
+  });
+
+  test.afterEach(async () => {
+    await page.close();
+  });
+
+  test('Verify all main form elements are visible', async () => {
+    await expect(page.locator('//h4[normalize-space()="Consumer Dashboard"]')).toBeVisible();
+    await expect(page.locator('#name')).toBeVisible();
+    await expect(page.locator('#description')).toBeVisible();
+    await expect(page.locator('#readWriteGroup')).toBeVisible();
+    await expect(page.locator('#emailDlAddress')).toBeVisible();
+    await expect(page.locator('[data-testid="submitBtn"]')).toBeVisible();
+    await expect(page.locator('[data-testid="cancelBtn"]')).toBeVisible();
+  });
+
+  test('Validate consumer name field functionality', async () => {
+    const nameField = page.locator('#name');
+    const validateBtn = page.locator("//input[@id='name']//following-sibling::button");
+    const successIcon = page.locator('//input[@name="name"][@id="name"]//following-sibling::button[@aria-label ="Validate"]/span');
+    const emptyError = page.locator('//span[text()="The value cannot be empty."]');
+    const lengthError = page.locator('//span[text()="Name is too long"]');
+
+    // Test valid name
+    await nameField.fill('ValidName123');
+    await validateBtn.click();
+    await expect(successIcon).toBeVisible();
+
+    // Test empty name
+    await nameField.fill('   ');
+    await validateBtn.click();
+    await expect(emptyError).toBeVisible();
+
+    // Test name too long
+    await nameField.fill('a'.repeat(101));
+    await validateBtn.click();
+    await expect(lengthError).toBeVisible();
+  });
+
+  test('Validate read/write group field functionality', async () => {
+    const groupField = page.locator('#readWriteGroup');
+    const validateBtn = page.locator("//input[@id='readWriteGroup']//following-sibling::button");
+    const successIcon = page.locator('//input[@name="readWriteGroup"][@id="readWriteGroup"]//following-sibling::button[@aria-label ="Validate"]/span');
+    const errorMsg = page.locator('//div/span[text()="Group ID not found in IIQ."]');
+
+    // Test valid group
+    await groupField.fill('GG-HYPERDRIVE-FEATURE-TESTER');
+    await validateBtn.click();
+    await expect(successIcon).toBeVisible();
+
+    // Test invalid group
+    await groupField.fill('invalid-group');
+    await validateBtn.click();
+    await expect(errorMsg).toBeVisible();
+  });
+
+  test('Validate email field functionality', async () => {
+    const emailField = page.locator('#emailDlAddress');
+    const errorMsg = page.locator('//div/span[text()="Email should be @aexp.com"]');
+
+    // Test valid email
+    await emailField.fill('valid@aexp.com');
+    await expect(errorMsg).not.toBeVisible();
+
+    // Test invalid email
+    await emailField.fill('invalid@email.com');
+    await expect(errorMsg).toBeVisible();
+  });
+
+  test('Verify form submission with valid data', async () => {
+    await page.locator('#name').fill('TestConsumer123');
+    await page.locator("//input[@id='name']//following-sibling::button").click();
+    await page.locator('#description').fill('Test description');
+    await page.locator('#readWriteGroup').fill('GG-HYPERDRIVE-FEATURE-TESTER');
+    await page.locator("//input[@id='readWriteGroup']//following-sibling::button").click();
+    await page.locator('#emailDlAddress').fill('test@aexp.com');
+    
+    await page.locator('[data-testid="submitBtn"]').click();
+    await expect(page).toHaveURL(/success/);
+  });
+
+  test('Verify cancel button functionality', async () => {
+    await page.locator('[data-testid="cancelBtn"]').click();
+    await expect(page).toHaveURL(/dashboard/);
+  });
+
+  test('Verify CAR ID validation', async () => {
+    await page.locator("//input[@id='carId']").fill('500000138');
+    await page.locator("//input[@id='carId']//following-sibling::button").click();
+    await expect(page.locator("//input[@id='carId']/following-sibling::button/span")).toBeVisible();
+  });
+
+  test('Verify Show/Hide Details functionality', async () => {
+    await page.locator('//a[@role="button" and text()="Show Details"]').click();
+    await expect(page.locator('[data-testid="section3"]')).toBeVisible();
+  });
+
+  test('Verify all validate buttons initial state', async () => {
+    const validateButtons = await page.locator('[aria-label="Validate"]').all();
+    for (const button of validateButtons) {
+      await expect(button).toBeDisabled();
+    }
+  });
+
+  test('Verify profile menu navigation', async () => {
+    await page.locator('#profile-menu').click();
+    await expect(page.locator("text=Consumer")).toBeVisible();
+    await page.locator("text=Consumer").click();
+    await expect(page.locator("text=Add New Registration")).toBeVisible();
+  });
+
+  test('Verify field labels and help text', async () => {
+    await expect(page.locator("label[for='name']")).toHaveText('Consumer Name');
+    await expect(page.locator("label[for='description']")).toHaveText('Description');
+    await expect(page.locator("label[for='readWriteGroup']")).toHaveText('Read/Write Group');
+    await expect(page.locator("label[for='emailDlAddress']")).toHaveText('Email Distribution Address');
+    await expect(page.locator("#name-helper-text")).toBeVisible();
+  });
+
+  test('Verify character counter functionality', async () => {
+    await page.locator('#name').fill('Test');
+    await expect(page.locator("//span[normalize-space()='4']")).toHaveText('4');
+  });
+
+  test('Verify validation icon colors', async () => {
+    await page.locator('#name').fill('ValidName');
+    await page.locator("//input[@id='name']//following-sibling::button").click();
+    const color = await page.locator("(//span[@class='display-block css-ab09iz'])[1]").getAttribute('color');
+    expect(color).toBe('success');
+  });
+});
