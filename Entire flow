@@ -35,3 +35,111 @@ test('test', async ({ page }) => {
   await page.locator('#location').selectOption('Global Processing');
   await page.goto('https://hyperdrive-qa.aexp.com/consumer/643/viewusecase?useCaseId=cb51f8ff-1620-45c6-ac87-ca467f4908c5');
 });
+=============================================================================================
+import { test, expect } from '@playwright/test';
+import ConsumerPage from '../../pages/consumerPage/consumerPage.js';
+
+let page;
+let consumerPage;
+
+// Configure test suite
+test.describe.configure({ mode: 'serial' });
+
+// Login credentials
+const credentials = {
+  username: 'nthodeti',
+  password: 'Hyperdrive@UI@5814'
+};
+
+// Page Elements
+const selectors = {
+  userId: 'textbox[name="User ID"]',
+  password: 'textbox[name="Password"]',
+  loginButton: 'button[name="Log In"]',
+  participantsDropdown: '#participants',
+  consumerNameInput: 'textbox[name="Consumer Name"]',
+  consumerDescInput: 'textbox[name="Consumer Description"]',
+  readOnlyGroupInput: 'textbox[name="Read Only Group (Optional)"]',
+  emailInput: 'textbox[name="Email Distribution Address"]',
+  readWriteGroupInput: 'textbox[name="Read/Write Group"]',
+  useCaseNameInput: '#useCaseName',
+  totalAmountInput: '#totalAmt',
+  projectDetailInput: '#projectDetail',
+  useCasePurposeInput: 'textbox[name="Use Case Purpose"]',
+  carIdInput: 'textbox[name="CAR ID"]',
+  locationDropdown: '#location'
+};
+
+// Utility for login
+async function login(page) {
+  await page.goto('https://authbluesvcqa-vip.phx.aexp.com/ssoi/auth?...');
+  await page.getByRole('textbox', { name: 'User ID' }).fill(credentials.username);
+  await page.getByRole('textbox', { name: 'Password' }).fill(credentials.password);
+  await page.getByRole('button', { name: 'Log In' }).click();
+}
+
+// Methods
+async function fillConsumerDetails(page) {
+  await page.getByRole('textbox', { name: 'Consumer Name' }).fill('test_April');
+  await page.getByRole('textbox', { name: 'Consumer Description' }).fill('afadsfads');
+  await page.getByRole('textbox', { name: 'Read Only Group (Optional)' }).fill('GG-HYPERDRIVE-FEATURE-TESTER');
+  await page.getByRole('textbox', { name: 'Email Distribution Address' }).fill('aa@aexp.com');
+  await page.getByRole('textbox', { name: 'Email Distribution Address' }).press('NumLock');
+  await page.getByRole('textbox', { name: 'Read/Write Group' }).fill('GG-HYPERDRIVE-FEATURE-TESTER');
+}
+
+async function fillUseCaseDetails(page) {
+  await page.locator('#useCaseName').fill('test_April');
+  const popupPromise = page.waitForEvent('popup');
+  await page.locator('#totalAmt').fill('33');
+  const popup = await popupPromise;
+  await popup.goto('https://login.microsoftonline.com/...');
+  await page.locator('#projectDetail').fill('https://hyperdrive-qa.aexp.com/consumer/643/addusecase');
+}
+
+async function completeRequestAccessFlow(page) {
+  await page.goto('https://hyperdrive-qa.aexp.com/consumer/643/reqaccess/requestaccess/useCasePurpose?useCaseId=cb51f8ff-1620-45c6-ac87-ca467f4908c5&acsReqId=');
+  await page.getByRole('textbox', { name: 'Use Case Purpose' }).fill('Test');
+  await page.getByRole('textbox', { name: 'CAR ID' }).fill('500000138');
+  await page.goto('https://hyperdrive-qa.aexp.com/consumer/643/reqaccess/requestaccess/sourceAndEventTypes?useCaseId=cb51f8ff-1620-45c6-ac87-ca467f4908c5&acsReqId=f7462c1a-ec15-4b7a-ac99-875f49f635bb');
+  await page.locator('#location').selectOption('Global Processing');
+  await page.goto('https://hyperdrive-qa.aexp.com/consumer/643/viewusecase?useCaseId=cb51f8ff-1620-45c6-ac87-ca467f4908c5');
+}
+
+// Set up the test environment
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  consumerPage = new ConsumerPage(page);
+});
+
+// Consumer Flow Test Suite
+
+test.describe('Complete Consumer Workflow Tests', () => {
+  test('Consumer Full Flow Execution', async () => {
+    await login(page);
+
+    await page.goto('https://hyperdrive-qa.aexp.com/consumer/639');
+    await page.getByRole('button', { name: /Account Icon narendra/i }).click();
+
+    await page.locator('#participants').selectOption('482');
+    await page.goto('https://hyperdrive-qa.aexp.com/consumer/482');
+    await page.locator('#participants').selectOption('390');
+    await page.goto('https://hyperdrive-qa.aexp.com/consumer/390/viewusecase?useCaseId=44ea4881-7e3e-4db5-9639-45aec41219d2');
+    await page.locator('#participants').selectOption('');
+
+    await page.goto('https://hyperdrive-qa.aexp.com/consumer/addparticipant');
+    await fillConsumerDetails(page);
+
+    await page.goto('https://hyperdrive-qa.aexp.com/consumer/643/addusecase');
+    await fillUseCaseDetails(page);
+
+    await completeRequestAccessFlow(page);
+  });
+});
+
+// Clean up
+
+test.afterAll(async () => {
+  await page.close();
+});
