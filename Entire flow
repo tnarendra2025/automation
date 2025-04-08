@@ -937,6 +937,137 @@ class ConsumerRegistionPage {
 
 export default ConsumerRegistionPage;
 
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+import { test, expect } from "@playwright/test";
+import HomePage from "../../pages/commonPage/homePage.js";
+import ConsumerRegistionPage from "../../pages/consumerPage/consumerPage.js";
 
+test.describe("Consumer Details and Registration Page Validation", () => {
+  let page;
+  let homePage;
+  let consumerRegistionPage;
+
+  test.beforeEach(async ({ browser }) => {
+    page = await browser.newPage();
+    await page.goto("https://hyperdrive-qa.aexp.com/");
+    homePage = new HomePage(page);
+    await homePage.login("nthodeti", "Hyperdrive@UI@5814");
+    await page.waitForLoadState("domcontentloaded");
+  });
+
+  const navigateToConsumerRegistration = async () => {
+    await homePage.profile();
+    await homePage.selectConsumer();
+    await homePage.addnewRegistration();
+    consumerRegistionPage = new ConsumerRegistionPage(page);
+    await page.waitForLoadState("networkidle");
+    await page.waitForTimeout(2000);
+  };
+
+  test("Verify successful consumer registration", async () => {
+    await navigateToConsumerRegistration();
+    
+    await consumerRegistionPage.registerNewConsumer(
+      "TestConsumer123",
+      "Test Consumer Description",
+      "GG-HYPERDRIVE-FEATURE-TESTER",
+      "test@aexp.com"
+    );
+
+    await expect(page).toHaveURL("https://hyperdrive-qa.aexp.com/consumer/addparticipant");
+  });
+
+  test("Verify name too long validation", async () => {
+    await navigateToConsumerRegistration();
+    
+    await consumerRegistionPage.locators.consumerName.fill("a".repeat(101));
+    await consumerRegistionPage.locators.nameValidateBtn.click();
+    
+    const error = await consumerRegistionPage.getLongConsumerNameError();
+    await expect(error).toContain("Name is too long");
+  });
+
+  test("Verify background color of CAR ID field", async () => {
+    await navigateToConsumerRegistration();
+    await consumerRegistionPage.locators.carIdLocator.fill("500000138");
+    await consumerRegistionPage.locators.carIdValidateLocator.click();
+    await page.waitForTimeout(2000);
+    const element = await consumerRegistionPage.locators.carId_Color;
+    await homePage.backGroundColor(element);
+  });
+
+  test("Verify validate buttons are disabled before producer registration", async () => {
+    await homePage.profile();
+    await homePage.selectProducer();
+    await homePage.addnewRegistration();
+    consumerRegistionPage = new ConsumerRegistionPage(page);
+    
+    const count = await consumerRegistionPage.locators.validatebtn_Loc.count();
+    for (let i = 0; i < count; i++) {
+      await expect(consumerRegistionPage.locators.validatebtn_Loc.nth(i)).toBeDisabled();
+    }
+    await expect(consumerRegistionPage.locators.submitBtnLocator).toBeDisabled();
+  });
+
+  test("Verify empty name validation", async () => {
+    await navigateToConsumerRegistration();
+    await consumerRegistionPage.locators.consumerName.fill("  ");
+    await consumerRegistionPage.locators.nameValidateBtn.click();
+    await expect(consumerRegistionPage.locators.valueCannotBeEmpty_Loc).toBeVisible();
+  });
+
+  test("Verify valid name shows green tick", async () => {
+    await navigateToConsumerRegistration();
+    await consumerRegistionPage.locators.consumerName.fill("ValidName123");
+    await consumerRegistionPage.locators.nameValidateBtn.click();
+    await expect(consumerRegistionPage.locators.nameValidationGreenTickMarkLocator).toBeVisible();
+  });
+
+  test("Verify invalid email validation", async () => {
+    await navigateToConsumerRegistration();
+    await consumerRegistionPage.locators.emailDlAddress.fill("invalid@email.com");
+    await expect(consumerRegistionPage.locators.invalidEmail).toBeVisible();
+  });
+
+  test("Verify valid IIQ Group shows green tick", async () => {
+    await navigateToConsumerRegistration();
+    await consumerRegistionPage.locators.iiqGroupLocator.fill("gg-hyperdrive-feature-tester");
+    await consumerRegistionPage.locators.iiqGroupValidateLocator.click();
+    await expect(consumerRegistionPage.locators.iiqGroupValidatetickmarkLocator).toBeVisible();
+  });
+
+  test("Verify all form elements are interactable", async () => {
+    await navigateToConsumerRegistration();
+    
+    // Name field
+    await consumerRegistionPage.locators.consumerName.fill("TestName");
+    await expect(consumerRegistionPage.locators.consumerName).toHaveValue("TestName");
+    
+    // Description field
+    await consumerRegistionPage.locators.description.fill("Test Description");
+    await expect(consumerRegistionPage.locators.description).toHaveValue("Test Description");
+    
+    // Read/Write Group field
+    await consumerRegistionPage.locators.readWriteGroup.fill("test-group");
+    await expect(consumerRegistionPage.locators.readWriteGroup).toHaveValue("test-group");
+    
+    // Email field
+    await consumerRegistionPage.locators.emailDlAddress.fill("test@aexp.com");
+    await expect(consumerRegistionPage.locators.emailDlAddress).toHaveValue("test@aexp.com");
+    
+    // Buttons
+    await expect(consumerRegistionPage.locators.submitButton).toBeVisible();
+    await expect(consumerRegistionPage.locators.cancelButton).toBeVisible();
+  });
+
+  test("Verify Show/Hide Details functionality", async () => {
+    await navigateToConsumerRegistration();
+    await consumerRegistionPage.checkShowHideButtonFunctionality();
+  });
+
+  test.afterEach(async () => {
+    await homePage.quit();
+  });
+});
 
 
