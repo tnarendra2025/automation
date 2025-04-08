@@ -1215,4 +1215,154 @@ test.describe('Consumer Registration Form UI Tests', () => {
   }
 });
 
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+// @ts-check
+const { test, expect } = require('@playwright/test');
+
+test.describe('Consumer Registration Form UI Tests', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('https://your-app-url.com'); // Replace with actual URL
+    await page.click('#profile-menu');
+    await page.click('text=Consumer');
+    await page.click('text=Add New Registration');
+  });
+
+  const generateTests = (field, count, testFn) => {
+    for (let i = 1; i <= count; i++) {
+      test(`${field} Field Test #${i}`, async ({ page }) => {
+        await testFn(page, i);
+      });
+    }
+  };
+
+  // ---------- NAME FIELD TESTS ----------
+  generateTests('Name', 20, async (page, i) => {
+    const name = page.locator('#name');
+    const validateBtn = page.locator("//input[@id='name']//following-sibling::button");
+    const validationTick = page.locator("//input[@name='name'][@id='name']//following-sibling::button[@aria-label='Validate']/span");
+    const tooLongError = page.locator("//span[text()='Name is too long']");
+    const emptyError = page.locator("//span[text()='The value cannot be empty.']");
+
+    if (i === 1) {
+      await name.click();
+      await page.keyboard.press('Tab');
+      await expect(emptyError).toBeVisible();
+    } else if (i === 2) {
+      await name.fill('Valid Name');
+      await validateBtn.click();
+      await expect(validationTick).toBeVisible();
+    } else if (i === 3) {
+      await name.fill('A'.repeat(101));
+      await validateBtn.click();
+      await expect(tooLongError).toBeVisible();
+    } else {
+      const value = `Name ${i}`;
+      await name.fill(value);
+      await expect(name).toHaveValue(value);
+    }
+  });
+
+  // ---------- DESCRIPTION FIELD TESTS ----------
+  generateTests('Description', 20, async (page, i) => {
+    const description = page.locator('#description');
+    const tooLongError = page.locator("//span[text()='Description is too long']");
+
+    if (i === 1) {
+      await description.fill('This is a valid description.');
+      await expect(description).toHaveValue('This is a valid description.');
+    } else if (i === 2) {
+      await description.fill('');
+      await expect(description).toHaveValue('');
+    } else if (i === 3) {
+      await description.fill('D'.repeat(501));
+      await expect(tooLongError).toBeVisible();
+    } else {
+      const value = `Description test ${i}`;
+      await description.fill(value);
+      await expect(description).toHaveValue(value);
+    }
+  });
+
+  // ---------- GROUP FIELD TESTS ----------
+  generateTests('Group', 20, async (page, i) => {
+    const group = page.locator('#readWriteGroup');
+    const validateBtn = page.locator("//input[@id='readWriteGroup']//following-sibling::button");
+    const validationTick = page.locator("//input[@name='readWriteGroup'][@id='readWriteGroup']//following-sibling::button[@aria-label='Validate']/span");
+    const invalidError = page.locator("//div/span[text()='Group ID not found in IIQ.']");
+    const emptyError = page.locator("//span[text()='The value cannot be empty.']");
+
+    if (i === 1) {
+      await group.fill('ValidGroup');
+      await validateBtn.click();
+      await expect(validationTick).toBeVisible();
+    } else if (i === 2) {
+      await group.fill('FakeGroup123');
+      await validateBtn.click();
+      await expect(invalidError).toBeVisible();
+    } else if (i === 3) {
+      await group.click();
+      await page.keyboard.press('Tab');
+      await expect(emptyError).toBeVisible();
+    } else {
+      const value = `Group${i}`;
+      await group.fill(value);
+      await validateBtn.click();
+      await expect(group).toHaveValue(value);
+    }
+  });
+
+  // ---------- EMAIL FIELD TESTS ----------
+  generateTests('Email', 20, async (page, i) => {
+    const email = page.locator('#emailDlAddress');
+    const invalidError = page.locator("//div/span[text()='Email should be @aexp.com']");
+    const emptyError = page.locator("//span[text()='The value cannot be empty.']");
+    const submit = page.locator('[data-testid="submitBtn"]');
+
+    if (i === 1) {
+      await email.fill('user@aexp.com');
+      await expect(email).toHaveValue('user@aexp.com');
+    } else if (i === 2) {
+      await email.fill('user@gmail.com');
+      await submit.click();
+      await expect(invalidError).toBeVisible();
+    } else if (i === 3) {
+      await email.click();
+      await page.keyboard.press('Tab');
+      await expect(emptyError).toBeVisible();
+    } else {
+      const value = `user${i}@aexp.com`;
+      await email.fill(value);
+      await expect(email).toHaveValue(value);
+    }
+  });
+
+  // ---------- SUBMIT / CANCEL BUTTON TESTS ----------
+  generateTests('Submit', 20, async (page, i) => {
+    const name = page.locator('#name');
+    const group = page.locator('#readWriteGroup');
+    const email = page.locator('#emailDlAddress');
+    const submit = page.locator('[data-testid="submitBtn"]');
+    const cancel = page.locator('[data-testid="cancelBtn"]');
+    const dashboardHeader = page.locator('//h4[normalize-space()="Consumer Dashboard"]');
+
+    if (i === 1) {
+      await expect(submit).toBeDisabled();
+    } else if (i === 2) {
+      await name.fill('Valid Name');
+      await group.fill('ValidGroup');
+      await email.fill('user@aexp.com');
+      await expect(submit).toBeEnabled();
+    } else if (i === 3) {
+      await cancel.click();
+      await expect(dashboardHeader).toBeVisible();
+    } else {
+      await name.fill(`Valid Name ${i}`);
+      await group.fill(`Group${i}`);
+      await email.fill(`user${i}@aexp.com`);
+      await submit.click();
+      // Add form submission verification here as needed
+    }
+  });
+});
 
